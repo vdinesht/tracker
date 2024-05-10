@@ -3,7 +3,7 @@ package com.home.expense.tracker.datasource.impl;
 import com.home.expense.tracker.datasource.DataRow2024;
 import com.home.expense.tracker.datasource.Expense2024Reader;
 import com.home.expense.tracker.datasource.ExpenseData;
-import com.home.expense.tracker.datasource.PrimaryAccount;
+import com.home.expense.tracker.core.PrimaryAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

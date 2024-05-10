@@ -1,5 +1,8 @@
 package com.home.expense.tracker.datasource;
 
+import com.home.expense.tracker.core.GroupTag;
+import com.home.expense.tracker.core.PrimaryAccount;
+
 import java.time.LocalDate;
 
 public interface DataRow2024 {

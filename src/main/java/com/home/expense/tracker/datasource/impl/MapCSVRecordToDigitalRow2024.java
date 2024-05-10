@@ -1,8 +1,8 @@
 package com.home.expense.tracker.datasource.impl;
 
 import com.home.expense.tracker.datasource.DataRow2024;
-import com.home.expense.tracker.datasource.GroupTag;
-import com.home.expense.tracker.datasource.PrimaryAccount;
+import com.home.expense.tracker.core.GroupTag;
+import com.home.expense.tracker.core.PrimaryAccount;
 import org.apache.commons.csv.CSVRecord;
 
 import java.time.LocalDate;

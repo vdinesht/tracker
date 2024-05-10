@@ -1,4 +1,4 @@
-package com.home.expense.tracker.datasource;
+package com.home.expense.tracker.core;
 
 public enum CreditCard {
     Gift_Card("Gift Card"),

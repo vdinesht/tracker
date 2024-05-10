@@ -9,12 +9,12 @@ import java.time.LocalDate;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-public class CashBalanceTest {
+public class BankBalanceTest {
     @Autowired
-    CashBalance cashBalance;
+    BankBalance bankBalance;
     @Test
     void testBalance(){
-        System.out.println("Cash balance: " + cashBalance.getBalance(LocalDate.of(2021,1,1), LocalDate.of(2024,1,31)));
+        System.out.println("Cash balance: " + bankBalance.getBalance(LocalDate.of(2021,1,1), LocalDate.of(2024,1,31)));
         assertTrue(true);
     }
 }

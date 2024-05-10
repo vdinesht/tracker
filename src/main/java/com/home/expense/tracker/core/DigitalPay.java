@@ -1,6 +1,7 @@
-package com.home.expense.tracker.datasource;
+package com.home.expense.tracker.core;
 
-public enum CashPay {
+//Digital Payment Accounts
+public enum DigitalPay {
     Housing_Expenses("Housing Expenses"),
     Travel_Expense("Travel Expense"),
     Food_Expenses("Food Expenses"),
@@ -8,12 +9,19 @@ public enum CashPay {
     Education_Expenses("Education Expenses"),
     Other_Expense("Other Expense"),
     Personal_Loan("Personal Loan"),
-    Vendor_Cash("Vendor Cash"),
+    Vendor_Bank("Vendor Bank"),
+    Caterpillar_Inc("Caterpillar Inc"),
+    Caterpillar_India("Caterpillar India"),
+    Tenant("Tenant"),
+    SBI("SBI"),
+    ICICI("ICICI"),
     Medical_Expense("Medical Expense"),
-    Tenant("Tenant");
+    CEFCU("CEFCU"),
+    Other_Bank("Other Bank"),
+    Other_Employer("Other Employer");
     private final String value;
 
-    CashPay(String value) {
+    DigitalPay(String value) {
         this.value = value;
     }
 
