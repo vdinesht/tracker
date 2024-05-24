@@ -10,11 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 public class StatementMappingCSVReaderTest {
 
-    //@Autowired
-    //StatementMappingReader statementMappingReader;
+    private StatementMappingReader statementMappingReader = new StatementMappingCSVReader();
     @Test
     void testStatementMappingReader(){
-        StatementMappingReader statementMappingReader = new StatementMappingCSVReader();
         statementMappingReader.getAllDebitMappingRows().stream().forEach(System.out::println);
         statementMappingReader.getAllCreditMappingRows().stream().forEach(System.out::println);
         assertTrue(true);

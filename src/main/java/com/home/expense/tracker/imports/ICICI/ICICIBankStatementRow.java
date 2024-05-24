@@ -2,7 +2,7 @@ package com.home.expense.tracker.imports.ICICI;
 
 import java.time.LocalDate;
 
-public interface StatementRow {
+public interface ICICIBankStatementRow {
     int sno();
     LocalDate valueDate();
     LocalDate transactionDate();

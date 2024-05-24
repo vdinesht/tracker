@@ -1,36 +1,39 @@
 package com.home.expense.tracker.imports.ICICI;
 
+import com.home.expense.tracker.core.AccountStatement;
+import com.home.expense.tracker.imports.StatementMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 public class StatementCSVReaderTest {
-
     @Autowired
-    StatementReader statementReader;
+    ICICIBankStatementReader statementReader;
+    @Autowired
+    StatementMapper statementMapper;
 
     private int count = 0;
     @Test
     void testCSVReader(){
-        statementReader.getAllRows().forEach(e-> System.out.println(parseTransactionRemarks(e.transactionRemarks())));
         assertTrue(statementReader.getAllRows().size()>0);
 
-        System.out.println("Identified count: " + count);
+        //All credit Rows
+        statementReader.getAllCreditRows().stream().forEach(e-> { System.out.println(e.transactionRemarks());
+                                                                   System.out.println(statementMapper.getCreditMatcher(AccountStatement.Bank_ICICI_Thoraipakkam_Dinesh,
+                                                                           e.transactionRemarks()).token());
+                                                                    ++count;});
+
+
+        //All debit Rows
+        statementReader.getAllDebitRows().stream().forEach(e-> { System.out.println(e.transactionRemarks());
+            System.out.println(statementMapper.getDebitMatcher(AccountStatement.Bank_ICICI_Thoraipakkam_Dinesh,
+                    e.transactionRemarks()).token());
+            ++count;});
+
+        System.out.println("Total ICICI Statement line processed: " + count);
     }
 
-
-    private String parseTransactionRemarks(String raw){
-        String[] iciciTokens = {"UPI/", "ACH/" , "MMT/", "BIL/", "NEFT", "CMS/", "DMC/", "ATM/", "Int.Pd", "VSI/", "GIB/", "DCardfee", "VIN/", "NFS/", "DTK/", "CLG/"};
-
-        if (Arrays.stream(iciciTokens).anyMatch(raw::contains)) {
-            ++count;
-            return "";
-        }
-        else  return raw;
-    }
 }

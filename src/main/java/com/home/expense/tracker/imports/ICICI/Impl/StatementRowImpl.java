@@ -1,10 +1,10 @@
 package com.home.expense.tracker.imports.ICICI.Impl;
 
-import com.home.expense.tracker.imports.ICICI.StatementRow;
+import com.home.expense.tracker.imports.ICICI.ICICIBankStatementRow;
 
 import java.time.LocalDate;
 
-public class StatementRowImpl implements StatementRow {
+public class StatementRowImpl implements ICICIBankStatementRow {
 
     private int row;
     private LocalDate valueDate;

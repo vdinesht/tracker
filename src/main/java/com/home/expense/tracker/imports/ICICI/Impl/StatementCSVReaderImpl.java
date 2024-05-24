@@ -1,7 +1,7 @@
 package com.home.expense.tracker.imports.ICICI.Impl;
 
-import com.home.expense.tracker.imports.ICICI.StatementReader;
-import com.home.expense.tracker.imports.ICICI.StatementRow;
+import com.home.expense.tracker.imports.ICICI.ICICIBankStatementReader;
+import com.home.expense.tracker.imports.ICICI.ICICIBankStatementRow;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -18,23 +18,34 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class StatementCSVReaderImpl implements StatementReader {
+public class StatementCSVReaderImpl implements ICICIBankStatementReader {
     private final Logger logger = LoggerFactory.getLogger(StatementCSVReaderImpl.class);
     private final String statementFile = "C:\\Temp\\ExpenseTracker\\BankStatement\\OpTransactionHistory1JanTo31Dec2023UTF8.csv";
 
-    private final List<StatementRow> dataRowList = new ArrayList<>();
+    private final List<ICICIBankStatementRow> dataRowList = new ArrayList<>();
 
     @Override
-    public List<StatementRow> getAllRows()  {
+    public List<ICICIBankStatementRow> getAllRows()  {
         if (dataRowList.isEmpty())
             return fillDataRows();
         else
             return dataRowList;
     }
 
-    private List<StatementRow> fillDataRows() {
+    @Override
+    public List<ICICIBankStatementRow> getAllCreditRows() {
+        return getAllRows().stream().filter(e->e.withdrawAmount()==0).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ICICIBankStatementRow> getAllDebitRows() {
+        return getAllRows().stream().filter(e->e.depositAmount()==0).collect(Collectors.toList());
+    }
+
+    private List<ICICIBankStatementRow> fillDataRows() {
         try{
             Reader in = new FileReader(statementFile, StandardCharsets.UTF_8);
             CSVFormat cSVFormat = CSVFormat.DEFAULT.builder().build();
@@ -58,7 +69,7 @@ public class StatementCSVReaderImpl implements StatementReader {
         return dataRowList;
     }
 
-    private StatementRow transformCSVRecordToStatementRow(CSVRecord record){
+    private ICICIBankStatementRow transformCSVRecordToStatementRow(CSVRecord record){
         StatementRowImpl row = new StatementRowImpl();
         row.setRow(Integer.parseInt(record.values()[1]));
         row.setValueDate(convertStringToDate(record.values()[2]));
