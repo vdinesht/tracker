@@ -22,14 +22,14 @@ public class StatementCSVReaderTest {
 
         //All credit Rows
         statementReader.getAllCreditRows().stream().forEach(e-> { System.out.println(e.transactionRemarks());
-                                                                   System.out.println(statementMapper.getCreditMatcher(AccountStatement.Bank_ICICI_Thoraipakkam_Dinesh,
+                                                                   System.out.println(statementMapper.getCreditMatcher(AccountStatement.BankICICIThoraipakkamDinesh,
                                                                            e.transactionRemarks()).token());
                                                                     ++count;});
 
 
         //All debit Rows
         statementReader.getAllDebitRows().stream().forEach(e-> { System.out.println(e.transactionRemarks());
-            System.out.println(statementMapper.getDebitMatcher(AccountStatement.Bank_ICICI_Thoraipakkam_Dinesh,
+            System.out.println(statementMapper.getDebitMatcher(AccountStatement.BankICICIThoraipakkamDinesh,
                     e.transactionRemarks()).token());
             ++count;});
 

@@ -1,12 +1,12 @@
 package com.home.expense.tracker.datasource.impl;
 
-import com.home.expense.tracker.datasource.DataRow2024;
+import com.home.expense.tracker.datasource.TransactionDataRow;
 import com.home.expense.tracker.core.GroupTag;
 import com.home.expense.tracker.core.PrimaryAccount;
 
 import java.time.LocalDate;
 
-public class DataRow2024Impl implements DataRow2024 {
+public class TransactionDataRowImpl implements TransactionDataRow {
 
     private LocalDate date;
     private double amount;
@@ -132,7 +132,7 @@ public class DataRow2024Impl implements DataRow2024 {
 
     @Override
     public String toString() {
-        return "DataRow2024Impl{" +
+        return "TransactionDataRowImpl{" +
                 "date=" + date +
                 ", amount=" + amount +
                 ", currency='" + currency + '\'' +

@@ -11,12 +11,20 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @SpringBootTest
 public class Expense2024CSVReaderImplTest {
     @Autowired
-    Expense2024Reader expense2024Reader;
+    TransactionDataReader transactionDataReader;
     @Test
     void testCSVReading(){
-        List<DataRow2024> dataRows = expense2024Reader.getAllRows();
+        List<TransactionDataRow> dataRows = transactionDataReader.getAllRows();
         System.out.println(dataRows.get(12503));
         assertTrue(dataRows.size()>0);
 
+    }
+
+    @Test
+    void testTransactionHeaderEnum(){
+        TransactionDataHeader  transactionDataHeader;
+        System.out.println(TransactionDataHeader.Amount);
+        System.out.println(TransactionDataHeader.Amount.name());
+        System.out.println(TransactionDataHeader.Amount.toString());
     }
 }

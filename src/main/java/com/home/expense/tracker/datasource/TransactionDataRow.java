@@ -5,7 +5,7 @@ import com.home.expense.tracker.core.PrimaryAccount;
 
 import java.time.LocalDate;
 
-public interface DataRow2024 {
+public interface TransactionDataRow {
     LocalDate date();
     double amount();
     String currency();

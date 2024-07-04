@@ -24,10 +24,10 @@ import java.util.stream.Collectors;
 public class StatementMappingCSVReader implements StatementMappingReader {
 
     private final Logger logger = LoggerFactory.getLogger(StatementMappingCSVReader.class);
-    private final static Map<String, PrimaryAccount> mapPrimaryAccountToValue = EnumSet.allOf(PrimaryAccount.class).stream().collect(Collectors.toMap(e->e.getValue(), e->e));
+    private final static Map<String, PrimaryAccount> mapPrimaryAccountToValue = EnumSet.allOf(PrimaryAccount.class).stream().collect(Collectors.toMap(e->e.name(), e->e));
     private final static Map<String, SubAccount> mapSubAccountToValue = EnumSet.allOf(SubAccount.class).stream().collect(Collectors.toMap(e->e.getValue(), e->e));
 
-    private final static Map<String, AccountStatement> mapAccountStatementToValue = EnumSet.allOf(AccountStatement.class).stream().collect(Collectors.toMap(e->e.getValue(), e->e));
+    private final static Map<String, AccountStatement> mapAccountStatementToValue = EnumSet.allOf(AccountStatement.class).stream().collect(Collectors.toMap(e->e.name(), e->e));
 
     private List<StatementMappingRow> creditMappingList = new ArrayList<>();
     private List<StatementMappingRow> debitMappingList = new ArrayList<>();
