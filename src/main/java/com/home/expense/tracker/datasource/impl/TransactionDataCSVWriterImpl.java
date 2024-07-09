@@ -20,14 +20,15 @@ public class TransactionDataCSVWriterImpl implements TransactionDataWriter {
     private final String transactionsDataFile = "C:\\Temp\\ExpenseTracker\\OurHomeTransactionsDataUTF8V1.csv";
 
     @Override
-    public boolean saveAll(List<TransactionDataRow> allRows) {
-        return saveToFile(transactionsDataFile, allRows);
-    }
+    public boolean saveAll(List<TransactionDataRow> allRows){ return saveToFile(false, allRows);  }
 
-    private boolean saveToFile(String fullPath, List<TransactionDataRow> dataRows) {
+    @Override
+    public boolean addAll(List<TransactionDataRow> allRows) { return saveToFile(true, allRows); }
+
+    private boolean saveToFile(boolean append, List<TransactionDataRow> dataRows) {
         boolean saveSuccessful = false;
         try{
-            FileWriter fileWriter = new FileWriter(transactionsDataFile);
+            FileWriter fileWriter = getFileWriter(append);
             CSVPrinter printer = CSVFormat.DEFAULT.builder()
                                             .setHeader(TransactionDataHeader.class)
                                             .build()
@@ -45,6 +46,11 @@ public class TransactionDataCSVWriterImpl implements TransactionDataWriter {
         }
         logger.info("Records saved to CSV File: " + dataRows.size());
         return saveSuccessful;
+    }
+
+    private FileWriter getFileWriter(boolean append) throws IOException {
+        FileWriter fileWriter = new FileWriter(transactionsDataFile,append);
+        return fileWriter;
     }
 
     private void printTo(CSVPrinter printer, TransactionDataRow r)  {

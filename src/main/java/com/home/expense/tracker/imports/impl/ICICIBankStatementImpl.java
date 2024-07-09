@@ -1,7 +1,8 @@
-package com.home.expense.tracker.imports.ICICI.Impl;
+package com.home.expense.tracker.imports.impl;
 
-import com.home.expense.tracker.imports.ICICI.ICICIBankStatementReader;
-import com.home.expense.tracker.imports.ICICI.ICICIBankStatementRow;
+import com.home.expense.tracker.imports.AccountStatement;
+import com.home.expense.tracker.imports.AccountStatementName;
+import com.home.expense.tracker.imports.AccountStatementRow;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -18,34 +19,28 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
-public class StatementCSVReaderImpl implements ICICIBankStatementReader {
-    private final Logger logger = LoggerFactory.getLogger(StatementCSVReaderImpl.class);
+public class ICICIBankStatementImpl implements AccountStatement {
+    private final Logger logger = LoggerFactory.getLogger(ICICIBankStatementImpl.class);
     private final String statementFile = "C:\\Temp\\ExpenseTracker\\BankStatement\\OpTransactionHistory1JanTo31Dec2023UTF8.csv";
 
-    private final List<ICICIBankStatementRow> dataRowList = new ArrayList<>();
+    private final List<AccountStatementRow> dataRowList = new ArrayList<>();
 
     @Override
-    public List<ICICIBankStatementRow> getAllRows()  {
+    public AccountStatementName statementName() {
+        return AccountStatementName.BankICICIThoraipakkamDinesh;
+    }
+
+    @Override
+    public List<AccountStatementRow> getAllRows()  {
         if (dataRowList.isEmpty())
             return fillDataRows();
         else
             return dataRowList;
     }
 
-    @Override
-    public List<ICICIBankStatementRow> getAllCreditRows() {
-        return getAllRows().stream().filter(e->e.withdrawAmount()==0).collect(Collectors.toList());
-    }
-
-    @Override
-    public List<ICICIBankStatementRow> getAllDebitRows() {
-        return getAllRows().stream().filter(e->e.depositAmount()==0).collect(Collectors.toList());
-    }
-
-    private List<ICICIBankStatementRow> fillDataRows() {
+    private List<AccountStatementRow> fillDataRows() {
         try{
             Reader in = new FileReader(statementFile, StandardCharsets.UTF_8);
             CSVFormat cSVFormat = CSVFormat.DEFAULT.builder().build();
@@ -69,8 +64,8 @@ public class StatementCSVReaderImpl implements ICICIBankStatementReader {
         return dataRowList;
     }
 
-    private ICICIBankStatementRow transformCSVRecordToStatementRow(CSVRecord record){
-        StatementRowImpl row = new StatementRowImpl();
+    private AccountStatementRow transformCSVRecordToStatementRow(CSVRecord record){
+        ICICIStatementRowImpl row = new ICICIStatementRowImpl();
         row.setRow(Integer.parseInt(record.values()[1]));
         row.setValueDate(convertStringToDate(record.values()[2]));
         row.setTransactionDate(convertStringToDate(record.values()[3]));

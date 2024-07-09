@@ -1,5 +1,7 @@
 package com.home.expense.tracker.datasource.impl;
 
+import com.home.expense.tracker.core.SubAccount;
+import com.home.expense.tracker.core.TransactionCurrency;
 import com.home.expense.tracker.datasource.TransactionDataHeader;
 import com.home.expense.tracker.datasource.TransactionDataRow;
 import com.home.expense.tracker.core.GroupTag;
@@ -14,7 +16,10 @@ import java.util.stream.Collectors;
 public final class MapCSVRecordToTransactionDataRow {
 
     private final static Map<String, PrimaryAccount> mapPrimaryAccountToValue = EnumSet.allOf(PrimaryAccount.class).stream().collect(Collectors.toMap(e->e.name(), e->e));
+    private final static Map<String, SubAccount> mapSubAccountToValue = EnumSet.allOf(SubAccount.class).stream().collect(Collectors.toMap(e->e.name(), e->e));
     private final static Map<String, GroupTag> mapGroupTagToValue = EnumSet.allOf(GroupTag.class).stream().collect(Collectors.toMap(e->e.name(), e->e));
+
+    private final static Map<String, TransactionCurrency> mapCurrencyToValue = EnumSet.allOf(TransactionCurrency.class).stream().collect(Collectors.toMap(e->e.name(), e->e));
 
     private MapCSVRecordToTransactionDataRow(){}
     public static TransactionDataRow transform(CSVRecord record){
@@ -22,12 +27,12 @@ public final class MapCSVRecordToTransactionDataRow {
 
         transactionDataRow.setDate(extractDate(record.get(TransactionDataHeader.Date)));
         transactionDataRow.setAmount(extractAmount(record.get(TransactionDataHeader.Amount)));
-        transactionDataRow.setCurrency(record.get(TransactionDataHeader.Currency));
+        transactionDataRow.setCurrency(extractCurrency(record.get(TransactionDataHeader.Currency)));
         transactionDataRow.setDescription(record.get(TransactionDataHeader.Description));
         transactionDataRow.setDebitAccount(extractDebitAccount(record.get(TransactionDataHeader.DebitAccount)));
         transactionDataRow.setCreditAccount(extractCreditAccount(record.get(TransactionDataHeader.CreditAccount)));
-        transactionDataRow.setDebitSubAccount(record.get(TransactionDataHeader.DebitSubAccount));
-        transactionDataRow.setCreditSubAccount(record.get(TransactionDataHeader.CreditSubAccount));
+        transactionDataRow.setDebitSubAccount(extractDebitSubAccount(record.get(TransactionDataHeader.DebitSubAccount)));
+        transactionDataRow.setCreditSubAccount(extractCreditSubAccount(record.get(TransactionDataHeader.CreditSubAccount)));
         transactionDataRow.setTransType2015(record.get(TransactionDataHeader.Type));
         transactionDataRow.setGroupTag(extractGroupTag(record.get(TransactionDataHeader.GroupTag)));
         transactionDataRow.setGdriveLink(record.get(TransactionDataHeader.GLinkDrive));
@@ -44,6 +49,13 @@ public final class MapCSVRecordToTransactionDataRow {
         return Double.parseDouble(amountString);
     }
 
+    private static SubAccount extractDebitSubAccount(String debitAcc){
+        return mapSubAccountToValue.get(debitAcc);
+    }
+    private static SubAccount extractCreditSubAccount(String creditAcc){
+        return mapSubAccountToValue.get(creditAcc);
+    }
+
     private static PrimaryAccount extractDebitAccount(String debitAcc){
         return mapPrimaryAccountToValue.get(debitAcc);
     }
@@ -52,6 +64,10 @@ public final class MapCSVRecordToTransactionDataRow {
     }
     private static GroupTag extractGroupTag(String groupTagString){
         return mapGroupTagToValue.get(groupTagString);
+    }
+
+    private static TransactionCurrency extractCurrency(String currency){
+        return mapCurrencyToValue.get(currency);
     }
     private static int extractId(String IdString){
         return Integer.parseInt(IdString);

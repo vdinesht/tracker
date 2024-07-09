@@ -1,6 +1,6 @@
 package com.home.expense.tracker.imports.impl;
 
-import com.home.expense.tracker.core.AccountStatement;
+import com.home.expense.tracker.imports.AccountStatementName;
 import com.home.expense.tracker.imports.StatementMapper;
 import com.home.expense.tracker.imports.StatementMappingReader;
 import com.home.expense.tracker.imports.StatementMappingRow;
@@ -17,16 +17,16 @@ public class StatementMapperImpl implements StatementMapper {
     private final StatementMappingReader statementMappingReader = new StatementMappingCSVReader();
 
     @Override
-    public StatementMappingRow getCreditMatcher(AccountStatement statementOf, String transactionText){
+    public StatementMappingRow getCreditMatcher(AccountStatementName statementOf, String transactionText){
         return getStatementMappingRow(statementOf, transactionText,statementMappingReader.getAllCreditMappingRows());
     }
 
     @Override
-    public StatementMappingRow getDebitMatcher(AccountStatement statementOf, String transactionText) {
+    public StatementMappingRow getDebitMatcher(AccountStatementName statementOf, String transactionText) {
         return getStatementMappingRow(statementOf, transactionText,statementMappingReader.getAllDebitMappingRows());
     }
 
-    private StatementMappingRow getStatementMappingRow(AccountStatement statementOf, String transactionText, List<StatementMappingRow> allRows) {
+    private StatementMappingRow getStatementMappingRow(AccountStatementName statementOf, String transactionText, List<StatementMappingRow> allRows) {
         List<StatementMappingRow> listOfAccountStatement =allRows.stream().filter(e-> statementOf == e.statement()).collect(Collectors.toList());
 
         List<StatementMappingRow> matchList = listOfAccountStatement.stream().filter(e-> {  Pattern p = Pattern.compile(e.token());

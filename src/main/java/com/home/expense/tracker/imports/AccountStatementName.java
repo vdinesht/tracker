@@ -1,6 +1,6 @@
-package com.home.expense.tracker.core;
+package com.home.expense.tracker.imports;
 
-public enum AccountStatement {
+public enum AccountStatementName {
 
     BankICICINagercoilJoint,
     BankICICIThoraipakkamDinesh,

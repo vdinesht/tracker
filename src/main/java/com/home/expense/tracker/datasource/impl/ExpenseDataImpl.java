@@ -17,27 +17,32 @@ import java.util.stream.Collectors;
 @Service
 public class ExpenseDataImpl implements TransactionData {
     private final Logger logger = LoggerFactory.getLogger(ExpenseDataImpl.class);
+
+    private List<TransactionDataRow> dataRows = new ArrayList<>();
     @Autowired
     TransactionDataReader expense2024Reader;
 
-    @Override
-    public List<TransactionDataRow> getRows(LocalDate from, LocalDate to) {
-        return expense2024Reader.getAllRows().stream().filter(e->  e.date().isAfter(from) && e.date().isBefore(to)).collect(Collectors.toList());
+    public List<TransactionDataRow> getAllRows()  {
+        if (dataRows.isEmpty())
+            dataRows.addAll(expense2024Reader.getAllRows());
+
+        return dataRows;
     }
 
     @Override
-    public boolean saveToFile(String fullFilePath) {
-        return false;
+    public List<TransactionDataRow> getRows(LocalDate from, LocalDate to) {
+        return getAllRows().stream().filter(e->  e.date().isAfter(from) && e.date().isBefore(to)).collect(Collectors.toList());
     }
+
 
     @Override
     public List<TransactionDataRow> getDebitRows(LocalDate from, LocalDate to, PrimaryAccount acc) {
-        return expense2024Reader.getAllRows().stream().filter(e->  e.date().isAfter(from) && e.date().isBefore(to) && e.debitAccount() == acc).collect(Collectors.toList());
+        return getAllRows().stream().filter(e->  e.date().isAfter(from) && e.date().isBefore(to) && e.debitAccount() == acc).collect(Collectors.toList());
     }
 
     @Override
     public List<TransactionDataRow> getCreditRows(LocalDate from, LocalDate to, PrimaryAccount acc) {
-        return expense2024Reader.getAllRows().stream().filter(e->  e.date().isAfter(from) && e.date().isBefore(to) && e.creditAccount() == acc).collect(Collectors.toList());
+        return getAllRows().stream().filter(e->  e.date().isAfter(from) && e.date().isBefore(to) && e.creditAccount() == acc).collect(Collectors.toList());
     }
 
     @Override
@@ -59,6 +64,8 @@ public class ExpenseDataImpl implements TransactionData {
                 listOfNewRows.add(newDataRow(e, rowIndex++));
              }
         }
+        //add to source list
+        dataRows.addAll(listOfNewRows);
         return listOfNewRows;
     }
 
@@ -79,11 +86,11 @@ public class ExpenseDataImpl implements TransactionData {
     }
     @Override
     public List<TransactionDataRow> findConflictingRows(List<TransactionDataRow> listRows) {
-        return expense2024Reader.getAllRows().stream().filter(e->isDuplicateRow(e)).collect(Collectors.toList());
+        return getAllRows().stream().filter(e->isDuplicateRow(e)).collect(Collectors.toList());
     }
 
     private boolean isDuplicateRow(TransactionDataRow dataRow){
-        return expense2024Reader.getAllRows().stream()
+        return getAllRows().stream()
                 .anyMatch(e->e.date().isEqual(dataRow.date()) && isSameAmount(e.amount(), dataRow.amount()) &&
                             e.debitAccount() == dataRow.debitAccount() && e.creditAccount() == dataRow.creditAccount());
     }
@@ -96,6 +103,6 @@ public class ExpenseDataImpl implements TransactionData {
     }
 
     private int getMaxIndex(){
-        return  expense2024Reader.getAllRows().stream().mapToInt(e -> e.id()).max().getAsInt();
+        return  getAllRows().stream().mapToInt(e -> e.id()).max().getAsInt();
     }
 }

@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TransactionData {
     List<TransactionDataRow> getRows(LocalDate from, LocalDate to);
-    boolean saveToFile(String fullFilePath);
+
     List<TransactionDataRow> getDebitRows(LocalDate from, LocalDate to, PrimaryAccount type);
     List<TransactionDataRow> getCreditRows(LocalDate from, LocalDate to, PrimaryAccount type);
 

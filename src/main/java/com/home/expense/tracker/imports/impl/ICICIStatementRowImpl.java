@@ -1,58 +1,55 @@
-package com.home.expense.tracker.imports.ICICI.Impl;
+package com.home.expense.tracker.imports.impl;
 
-import com.home.expense.tracker.imports.ICICI.ICICIBankStatementRow;
+import com.home.expense.tracker.core.TransactionCurrency;
+import com.home.expense.tracker.imports.AccountStatementRow;
+import com.home.expense.tracker.imports.StatementTransactionType;
 
 import java.time.LocalDate;
 
-public class StatementRowImpl implements ICICIBankStatementRow {
+public class ICICIStatementRowImpl implements AccountStatementRow {
 
     private int row;
     private LocalDate valueDate;
     private LocalDate transactionDate;
+    private final TransactionCurrency transactionCurrency = TransactionCurrency.INR;
     private String chequeNumber;
     private String transactionRemarks;
     private Double withdrawAmount;
     private Double depositAmount;
     private Double balance;
 
+    private StatementTransactionType transactionType = StatementTransactionType.Debit;
+
+
     @Override
-    public int sno() {
-        return this.row;
+    public TransactionCurrency currency() {
+        return this.transactionCurrency;
     }
 
     @Override
-    public LocalDate valueDate() {
-        return this.valueDate;
-    }
-
-    @Override
-    public LocalDate transactionDate() {
-        return this.transactionDate;
-    }
-
-    @Override
-    public String chequeNo() {
-        return this.chequeNumber;
-    }
-
-    @Override
-    public String transactionRemarks() {
+    public String transactionDescription() {
         return this.transactionRemarks;
     }
 
     @Override
-    public Double withdrawAmount() {
-        return this.withdrawAmount;
+    public Double transactionAmount() {
+        if (transactionType == StatementTransactionType.Debit)
+            return this.withdrawAmount;
+        else
+            return this.depositAmount;
     }
 
     @Override
-    public Double depositAmount() {
-        return this.depositAmount;
+    public StatementTransactionType transactionType() {
+        return this.transactionType;
     }
-
     @Override
-    public Double balance() {
-        return this.balance;
+    public LocalDate transactionDate() {
+        return this.transactionDate;
+    }
+    @Override
+    public int sno() {
+        return this.row;
     }
 
     public void setRow(int row) {
@@ -76,10 +73,14 @@ public class StatementRowImpl implements ICICIBankStatementRow {
     }
 
     public void setWithdrawAmount(Double withdrawAmount) {
+        if (withdrawAmount == 0)
+            this.transactionType = StatementTransactionType.Credit;
         this.withdrawAmount = withdrawAmount;
     }
 
     public void setDepositAmount(Double depositAmount) {
+        if (depositAmount == 0)
+            this.transactionType = StatementTransactionType.Debit;
         this.depositAmount = depositAmount;
     }
 
@@ -89,15 +90,17 @@ public class StatementRowImpl implements ICICIBankStatementRow {
 
     @Override
     public String toString() {
-        return "StatementRowImpl{" +
+        return "ICICIStatementRowImpl{" +
                 "row=" + row +
                 ", valueDate=" + valueDate +
                 ", transactionDate=" + transactionDate +
+                ", transactionCurrency=" + transactionCurrency +
                 ", chequeNumber='" + chequeNumber + '\'' +
                 ", transactionRemarks='" + transactionRemarks + '\'' +
                 ", withdrawAmount=" + withdrawAmount +
                 ", depositAmount=" + depositAmount +
                 ", balance=" + balance +
+                ", transactionType=" + transactionType +
                 '}';
     }
 }

@@ -1,5 +1,7 @@
 package com.home.expense.tracker.datasource.impl;
 
+import com.home.expense.tracker.core.SubAccount;
+import com.home.expense.tracker.core.TransactionCurrency;
 import com.home.expense.tracker.datasource.TransactionDataRow;
 import com.home.expense.tracker.core.GroupTag;
 import com.home.expense.tracker.core.PrimaryAccount;
@@ -10,12 +12,12 @@ public class TransactionDataRowImpl implements TransactionDataRow {
 
     private LocalDate date;
     private double amount;
-    private String currency;
+    private TransactionCurrency currency;
     private String description;
     private PrimaryAccount debitAccount;
     private PrimaryAccount creditAccount;
-    private String debitSubAccount;
-    private String creditSubAccount;
+    private SubAccount debitSubAccount;
+    private SubAccount creditSubAccount;
     private String transType2015;
 
     private GroupTag groupTag;
@@ -30,7 +32,7 @@ public class TransactionDataRowImpl implements TransactionDataRow {
         this.amount = amount;
     }
 
-    public void setCurrency(String currency) {
+    public void setCurrency(TransactionCurrency currency) {
         this.currency = currency;
     }
 
@@ -46,11 +48,11 @@ public class TransactionDataRowImpl implements TransactionDataRow {
         this.creditAccount = creditAccount;
     }
 
-    public void setDebitSubAccount(String debitSubAccount) {
+    public void setDebitSubAccount(SubAccount debitSubAccount) {
         this.debitSubAccount = debitSubAccount;
     }
 
-    public void setCreditSubAccount(String creditSubAccount) {
+    public void setCreditSubAccount(SubAccount creditSubAccount) {
         this.creditSubAccount = creditSubAccount;
     }
 
@@ -81,7 +83,7 @@ public class TransactionDataRowImpl implements TransactionDataRow {
     }
 
     @Override
-    public String currency() {
+    public TransactionCurrency currency() {
         return this.currency;
     }
 
@@ -101,12 +103,12 @@ public class TransactionDataRowImpl implements TransactionDataRow {
     }
 
     @Override
-    public String debitSubAccount() {
+    public SubAccount debitSubAccount() {
         return this.debitSubAccount;
     }
 
     @Override
-    public String creditSubAccount() {
+    public SubAccount creditSubAccount() {
         return this.creditSubAccount;
     }
 
