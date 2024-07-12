@@ -1,4 +1,4 @@
-package com.home.expense.tracker.imports.ICICI;
+package com.home.expense.tracker.imports;
 
 import com.home.expense.tracker.imports.*;
 import org.junit.jupiter.api.Test;
@@ -8,7 +8,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-public class StatementCSVReaderTest {
+public class AccountStatementTest {
     @Autowired
     AccountStatementFactory statementFactory;
     @Autowired

@@ -1,6 +1,5 @@
 package com.home.expense.tracker.imports;
 
-import com.home.expense.tracker.datasource.TransactionData;
 import com.home.expense.tracker.datatransform.TransformAccountStatementToExpenseData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +8,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-public class ImportICICIBankStatementToExpenseDataTest {
+public class AccountStatementToExpenseDataTransformTest {
     @Autowired
     AccountStatementFactory statementFactory;
-
-
     @Autowired
     TransformAccountStatementToExpenseData transformAccountStatementToExpenseData;
     @Test

@@ -70,7 +70,7 @@ public class ICICIBankStatementImpl implements AccountStatement {
         row.setValueDate(convertStringToDate(record.values()[2]));
         row.setTransactionDate(convertStringToDate(record.values()[3]));
         row.setChequeNumber(record.values()[4]);
-        row.setTransactionRemarks(record.values()[5]);
+        row.setTransactionRemarks(record.values()[5].trim());
         row.setWithdrawAmount(convertStringToDouble(record.values()[6]));
         row.setDepositAmount(convertStringToDouble(record.values()[7]));
         row.setBalance(convertStringToDouble(record.values()[8]));
