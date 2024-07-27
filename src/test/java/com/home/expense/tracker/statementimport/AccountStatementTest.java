@@ -1,6 +1,5 @@
-package com.home.expense.tracker.imports;
+package com.home.expense.tracker.statementimport;
 
-import com.home.expense.tracker.imports.*;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,21 +14,23 @@ public class AccountStatementTest {
     StatementMapper statementMapper;
 
     private int count = 0;
+
     @Test
     void testAccountStatementReader(){
-        AccountStatement statement = statementFactory.getStatement(AccountStatementName.BankICICIThoraipakkamDinesh);
+        String statementFile = "C:\\Temp\\ExpenseTracker\\BankStatement\\OpTransactionHistory1JanTo31Dec2023UTF8.csv";
+        AccountStatement statement = statementFactory.getStatement(statementFile);
         assertTrue(statement.getAllRows().size()>0);
 
         //All credit Rows
         statement.getAllRows().stream().filter(e->e.transactionType()== StatementTransactionType.Credit).forEach(e-> { System.out.println(e.transactionDescription());
-                                                                   System.out.println(statementMapper.getCreditMatcher(AccountStatementName.BankICICIThoraipakkamDinesh,
+                                                                   System.out.println(statementMapper.getCreditMatcher(AccountStatementType.BankICICIThoraipakkamDinesh,
                                                                            e.transactionDescription()).token());
                                                                     ++count;});
 
 
         //All debit Rows
         statement.getAllRows().stream().filter(e->e.transactionType()== StatementTransactionType.Debit).forEach(e-> { System.out.println(e.transactionDescription());
-            System.out.println(statementMapper.getDebitMatcher(AccountStatementName.BankICICIThoraipakkamDinesh,
+            System.out.println(statementMapper.getDebitMatcher(AccountStatementType.BankICICIThoraipakkamDinesh,
                     e.transactionDescription()).token());
             ++count;});
 

@@ -1,8 +1,8 @@
-package com.home.expense.tracker.imports.impl;
+package com.home.expense.tracker.statementimport.impl;
 
-import com.home.expense.tracker.imports.AccountStatement;
-import com.home.expense.tracker.imports.AccountStatementName;
-import com.home.expense.tracker.imports.AccountStatementRow;
+import com.home.expense.tracker.statementimport.AccountStatement;
+import com.home.expense.tracker.statementimport.AccountStatementType;
+import com.home.expense.tracker.statementimport.AccountStatementRow;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -23,45 +23,55 @@ import java.util.List;
 @Service
 public class ICICIBankStatementImpl implements AccountStatement {
     private final Logger logger = LoggerFactory.getLogger(ICICIBankStatementImpl.class);
-    private final String statementFile = "C:\\Temp\\ExpenseTracker\\BankStatement\\OpTransactionHistory1JanTo31Dec2023UTF8.csv";
+
 
     private final List<AccountStatementRow> dataRowList = new ArrayList<>();
 
     @Override
-    public AccountStatementName statementName() {
-        return AccountStatementName.BankICICIThoraipakkamDinesh;
+    public AccountStatementType statementName() {
+        return AccountStatementType.BankICICIThoraipakkamDinesh;
     }
 
     @Override
-    public List<AccountStatementRow> getAllRows()  {
-        if (dataRowList.isEmpty())
-            return fillDataRows();
+    public List<AccountStatementRow> readAllRows(String filePath)  {
+        if (this.dataRowList.isEmpty())
+            return fillDataRows(filePath);
         else
-            return dataRowList;
+            return this.dataRowList;
     }
 
-    private List<AccountStatementRow> fillDataRows() {
+    @Override
+    public List<AccountStatementRow> getAllRows() {
+        return this.dataRowList;
+    }
+
+    private List<AccountStatementRow> fillDataRows(String statementFile) {
         try{
-            Reader in = new FileReader(statementFile, StandardCharsets.UTF_8);
-            CSVFormat cSVFormat = CSVFormat.DEFAULT.builder().build();
-            Iterable<CSVRecord> records =  CSVParser.parse(in, cSVFormat);
-            for (CSVRecord record : records) {
-                if (!record.values()[1].isEmpty()) {
-                    try{
-                        if (Integer.parseInt(record.values()[1]) > 0){
-                            dataRowList.add(transformCSVRecordToStatementRow(record));
-                        }
-                    }
-                    catch (NumberFormatException ex){
-                        logger.info("Skipping Row : " + record);
-                    }
-                }
-            }
+            readFromCSVFile(statementFile);
         } catch (IOException ex){
             logger.error(ex.toString());
         }
         logger.info("Records read from ICICI Bank Statement CSV File: " + dataRowList.size());
-        return dataRowList;
+        return this.dataRowList;
+    }
+
+    private void readFromCSVFile(String statementFile) throws IOException {
+        Reader in = new FileReader(statementFile, StandardCharsets.UTF_8);
+        CSVFormat cSVFormat = CSVFormat.DEFAULT.builder().build();
+        Iterable<CSVRecord> records =  CSVParser.parse(in, cSVFormat);
+        for (CSVRecord record : records) {
+            if (!record.values()[1].isEmpty()) {
+                try{
+                    if (Integer.parseInt(record.values()[1]) > 0){
+                        this.dataRowList.add(transformCSVRecordToStatementRow(record));
+                    }
+                }
+                catch (NumberFormatException ex){
+                    logger.info("Skipping Row : " + record);
+                }
+            }
+        }
+        in.close();
     }
 
     private AccountStatementRow transformCSVRecordToStatementRow(CSVRecord record){

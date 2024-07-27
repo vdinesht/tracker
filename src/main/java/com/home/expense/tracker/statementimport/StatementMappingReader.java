@@ -1,6 +1,4 @@
-package com.home.expense.tracker.imports;
-
-import com.home.expense.tracker.imports.impl.StatementMappingRowImpl;
+package com.home.expense.tracker.statementimport;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.home.expense.tracker.imports;
+package com.home.expense.tracker.statementimport;
 
 import com.home.expense.tracker.datatransform.TransformAccountStatementToExpenseData;
 import org.junit.jupiter.api.Test;
@@ -13,9 +13,11 @@ public class AccountStatementToExpenseDataTransformTest {
     AccountStatementFactory statementFactory;
     @Autowired
     TransformAccountStatementToExpenseData transformAccountStatementToExpenseData;
+
+    private final String statementFile = "C:\\Temp\\ExpenseTracker\\BankStatement\\OpTransactionHistory1JanTo31Dec2023UTF8.csv";
     @Test
     void testImportingAllAvailableStatements(){
-        AccountStatement ex = statementFactory.getStatement(AccountStatementName.BankICICIThoraipakkamDinesh);
+        AccountStatement ex = statementFactory.getStatement(statementFile);
         ex.getAllRows().forEach(System.out::println);
         assertTrue(ex.getAllRows().size() > 0);
 
@@ -23,7 +25,7 @@ public class AccountStatementToExpenseDataTransformTest {
 
     @Test
     void testIciciBankStatementToTransacationRowConversion(){
-        AccountStatement ex = statementFactory.getStatement(AccountStatementName.BankICICIThoraipakkamDinesh);
+        AccountStatement ex = statementFactory.getStatement(statementFile);
         transformAccountStatementToExpenseData.transform(ex).forEach(System.out::println);
         assertTrue(transformAccountStatementToExpenseData.transform(ex).size()>0);
 

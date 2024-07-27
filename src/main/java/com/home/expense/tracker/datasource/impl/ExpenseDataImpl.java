@@ -4,14 +4,14 @@ import com.home.expense.tracker.core.PrimaryAccount;
 import com.home.expense.tracker.datasource.TransactionDataRow;
 import com.home.expense.tracker.datasource.TransactionDataReader;
 import com.home.expense.tracker.datasource.TransactionData;
+import com.home.expense.tracker.datasource.TransactionDataWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,6 +21,9 @@ public class ExpenseDataImpl implements TransactionData {
     private List<TransactionDataRow> dataRows = new ArrayList<>();
     @Autowired
     TransactionDataReader expense2024Reader;
+
+    @Autowired
+    TransactionDataWriter expenseWriter;
 
     public List<TransactionDataRow> getAllRows()  {
         if (dataRows.isEmpty())
@@ -59,13 +62,10 @@ public class ExpenseDataImpl implements TransactionData {
     public List<TransactionDataRow> addRows(List<TransactionDataRow> dataRows) {
         int rowIndex = getMaxIndex()+1;
         List<TransactionDataRow> listOfNewRows = new ArrayList<>();
-        for (TransactionDataRow e : dataRows) {
-            if (!isDuplicateRow(e)) {
-                listOfNewRows.add(newDataRow(e, rowIndex++));
-             }
+        for (TransactionDataRow row : findNewRows(dataRows)) {
+            listOfNewRows.add(newDataRow(row, rowIndex++));
         }
-        //add to source list
-        dataRows.addAll(listOfNewRows);
+        getAllRows().addAll(listOfNewRows);
         return listOfNewRows;
     }
 
@@ -86,23 +86,41 @@ public class ExpenseDataImpl implements TransactionData {
     }
     @Override
     public List<TransactionDataRow> findConflictingRows(List<TransactionDataRow> listRows) {
-        return getAllRows().stream().filter(e->isDuplicateRow(e)).collect(Collectors.toList());
+        Set<KeyTransactionDataRow> setExistingTransactionRows = new HashSet<>(getKeyRows(getAllRows()));
+        Map<KeyTransactionDataRow, TransactionDataRow> mapNewRows = getMapKeyRowToTransacationRow(listRows);
+        Set<KeyTransactionDataRow> setNewTransactionRows = new HashSet<>(mapNewRows.keySet());
+
+        setExistingTransactionRows.retainAll(setNewTransactionRows);
+        setNewTransactionRows.retainAll(setExistingTransactionRows);
+
+        return setNewTransactionRows.stream().map(mapNewRows::get).collect(Collectors.toList());
     }
 
-    private boolean isDuplicateRow(TransactionDataRow dataRow){
-        return getAllRows().stream()
-                .anyMatch(e->e.date().isEqual(dataRow.date()) && isSameAmount(e.amount(), dataRow.amount()) &&
-                            e.debitAccount() == dataRow.debitAccount() && e.creditAccount() == dataRow.creditAccount());
-    }
-
-    private boolean isSameAmount(double a, double b){
-        if (Math.abs(a-b) > 0.1)
-            return false;
-        else
-            return true;
+    @Override
+    public boolean savelAll() {
+        return expenseWriter.saveAll(getAllRows());
     }
 
     private int getMaxIndex(){
         return  getAllRows().stream().mapToInt(e -> e.id()).max().getAsInt();
+    }
+
+    private List<KeyTransactionDataRow> getKeyRows(List<TransactionDataRow> dataRows){
+        return dataRows.stream().map(KeyTransactionDataRow::new).collect(Collectors.toList());
+    }
+
+    private Map<KeyTransactionDataRow, TransactionDataRow> getMapKeyRowToTransacationRow(List<TransactionDataRow> dataRows){
+        return dataRows.stream().collect(Collectors.toMap(KeyTransactionDataRow::new, e->e));
+    }
+
+    private List<TransactionDataRow> findNewRows(List<TransactionDataRow> listRows) {
+        Set<KeyTransactionDataRow> setExistingTransactionRows = new HashSet<>(getKeyRows(getAllRows()));
+        Map<KeyTransactionDataRow, TransactionDataRow> mapNewRows = getMapKeyRowToTransacationRow(listRows);
+        Set<KeyTransactionDataRow> setNewTransactionRows = new HashSet<>(mapNewRows.keySet());
+
+        setExistingTransactionRows.retainAll(setNewTransactionRows);
+        setNewTransactionRows.removeAll(setExistingTransactionRows);
+
+        return setNewTransactionRows.stream().map(mapNewRows::get).collect(Collectors.toList());
     }
 }

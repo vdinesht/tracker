@@ -1,12 +1,12 @@
-package com.home.expense.tracker.imports.impl;
+package com.home.expense.tracker.statementimport.impl;
 
-import com.home.expense.tracker.imports.AccountStatementName;
+import com.home.expense.tracker.statementimport.AccountStatementType;
 import com.home.expense.tracker.core.PrimaryAccount;
 import com.home.expense.tracker.core.SubAccount;
-import com.home.expense.tracker.imports.StatementMappingRow;
+import com.home.expense.tracker.statementimport.StatementMappingRow;
 
 public class StatementMappingRowImpl implements StatementMappingRow {
-    AccountStatementName statement;
+    AccountStatementType statement;
     String token;
     PrimaryAccount debitAccount;
     PrimaryAccount creditAccount;
@@ -15,7 +15,7 @@ public class StatementMappingRowImpl implements StatementMappingRow {
 
 
 
-    public void setStatement(AccountStatementName statement) {
+    public void setStatement(AccountStatementType statement) {
         this.statement = statement;
     }
 
@@ -44,7 +44,7 @@ public class StatementMappingRowImpl implements StatementMappingRow {
         this.creditSubAccount = creditSubAccount;
     }
 
-    public StatementMappingRowImpl(AccountStatementName statement, String token, PrimaryAccount debitAccount, PrimaryAccount creditAccount, SubAccount debitSubAccount, SubAccount creditSubAccount) {
+    public StatementMappingRowImpl(AccountStatementType statement, String token, PrimaryAccount debitAccount, PrimaryAccount creditAccount, SubAccount debitSubAccount, SubAccount creditSubAccount) {
         this.statement = statement;
         this.token = token;
         this.debitAccount = debitAccount;
@@ -54,7 +54,7 @@ public class StatementMappingRowImpl implements StatementMappingRow {
     }
 
     @Override
-    public AccountStatementName statement() {
+    public AccountStatementType statement() {
         return this.statement;
     }
 

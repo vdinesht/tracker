@@ -1,8 +1,8 @@
-package com.home.expense.tracker.imports.impl;
+package com.home.expense.tracker.statementimport.impl;
 
 import com.home.expense.tracker.core.TransactionCurrency;
-import com.home.expense.tracker.imports.AccountStatementRow;
-import com.home.expense.tracker.imports.StatementTransactionType;
+import com.home.expense.tracker.statementimport.AccountStatementRow;
+import com.home.expense.tracker.statementimport.StatementTransactionType;
 
 import java.time.LocalDate;
 

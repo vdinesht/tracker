@@ -3,7 +3,7 @@ package com.home.expense.tracker.datatransform.impl;
 import com.home.expense.tracker.datasource.TransactionDataRow;
 import com.home.expense.tracker.datasource.impl.TransactionDataRowImpl;
 import com.home.expense.tracker.datatransform.TransformAccountStatementToExpenseData;
-import com.home.expense.tracker.imports.*;
+import com.home.expense.tracker.statementimport.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class TransformAccountStatementToExpenseDataImpl implements TransformAcco
         return  rowList;
     }
 
-    private TransactionDataRow mapBankStatementToTransactionDataRow(AccountStatementName statementName, AccountStatementRow statementRow) {
+    private TransactionDataRow mapBankStatementToTransactionDataRow(AccountStatementType statementName, AccountStatementRow statementRow) {
         if (statementRow.transactionType() == StatementTransactionType.Debit)
             return getTransactionDataRow(statementMapper.getDebitMatcher(statementName, statementRow.transactionDescription()), statementRow);
 

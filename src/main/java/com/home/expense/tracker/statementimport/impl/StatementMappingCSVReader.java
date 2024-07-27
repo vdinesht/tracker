@@ -1,10 +1,10 @@
-package com.home.expense.tracker.imports.impl;
+package com.home.expense.tracker.statementimport.impl;
 
-import com.home.expense.tracker.imports.AccountStatementName;
+import com.home.expense.tracker.statementimport.AccountStatementType;
 import com.home.expense.tracker.core.PrimaryAccount;
 import com.home.expense.tracker.core.SubAccount;
-import com.home.expense.tracker.imports.StatementMappingReader;
-import com.home.expense.tracker.imports.StatementMappingRow;
+import com.home.expense.tracker.statementimport.StatementMappingReader;
+import com.home.expense.tracker.statementimport.StatementMappingRow;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -26,16 +26,13 @@ import java.util.stream.Collectors;
 public class StatementMappingCSVReader implements StatementMappingReader {
 
     private final Logger logger = LoggerFactory.getLogger(StatementMappingCSVReader.class);
-    private final static Map<String, PrimaryAccount> mapPrimaryAccountToValue = EnumSet.allOf(PrimaryAccount.class).stream().collect(Collectors.toMap(e->e.name(), e->e));
-    private final static Map<String, SubAccount> mapSubAccountToValue = EnumSet.allOf(SubAccount.class).stream().collect(Collectors.toMap(e->e.getValue(), e->e));
+    private final static Map<String, PrimaryAccount> mapPrimaryAccountToValue = EnumSet.allOf(PrimaryAccount.class).stream().collect(Collectors.toMap(Enum::name, e->e));
+    private final static Map<String, SubAccount> mapSubAccountToValue = EnumSet.allOf(SubAccount.class).stream().collect(Collectors.toMap(SubAccount::getValue, e->e));
 
-    private final static Map<String, AccountStatementName> mapAccountStatementToValue = EnumSet.allOf(AccountStatementName.class).stream().collect(Collectors.toMap(e->e.name(), e->e));
+    private final static Map<String, AccountStatementType> mapAccountStatementToValue = EnumSet.allOf(AccountStatementType.class).stream().collect(Collectors.toMap(Enum::name, e->e));
 
     private List<StatementMappingRow> creditMappingList = new ArrayList<>();
     private List<StatementMappingRow> debitMappingList = new ArrayList<>();
-
-    private final String debitMappingFilePath = "C:\\Temp\\ExpenseTracker\\BankStatement\\StatementDebitMapping.csv";
-    private final String creditMappingFilePath = "C:\\Temp\\ExpenseTracker\\BankStatement\\StatementCreditMapping.csv";
 
     private List<StatementMappingRow> fillDataRows(String mappingFilePath) {
         List<StatementMappingRow> dataRowList = new ArrayList<>();
@@ -47,6 +44,7 @@ public class StatementMappingCSVReader implements StatementMappingReader {
                 if (!record.values()[0].isEmpty())
                     dataRowList.add(MapCSVRecordToStatementmappingRow(record));
             }
+            in.close();
         } catch (IOException ex){
             logger.error(ex.toString());
         }
@@ -55,17 +53,17 @@ public class StatementMappingCSVReader implements StatementMappingReader {
     }
 
     private StatementMappingRow MapCSVRecordToStatementmappingRow(CSVRecord record){
-        StatementMappingRow statementMappingRow = new StatementMappingRowImpl(mapAccountStatementToValue.get(record.values()[0]),
+        return new StatementMappingRowImpl(mapAccountStatementToValue.get(record.values()[0]),
                                                                                 record.values()[1],
                                                                                 mapPrimaryAccountToValue.get(record.values()[2]),
                                                                                 mapPrimaryAccountToValue.get(record.values()[3]),
                                                                                 mapSubAccountToValue.get(record.values()[4]),
                                                                                 mapSubAccountToValue.get(record.values()[5]));
-        return statementMappingRow;
     }
 
     @Override
     public List<StatementMappingRow> getAllDebitMappingRows() {
+        String debitMappingFilePath = "C:\\Temp\\ExpenseTracker\\BankStatement\\StatementDebitMapping.csv";
         if (debitMappingList.isEmpty())
             debitMappingList = fillDataRows(debitMappingFilePath);
 
@@ -74,6 +72,7 @@ public class StatementMappingCSVReader implements StatementMappingReader {
 
     @Override
     public List<StatementMappingRow> getAllCreditMappingRows() {
+        String creditMappingFilePath = "C:\\Temp\\ExpenseTracker\\BankStatement\\StatementCreditMapping.csv";
         if (creditMappingList.isEmpty())
             creditMappingList = fillDataRows(creditMappingFilePath);
 

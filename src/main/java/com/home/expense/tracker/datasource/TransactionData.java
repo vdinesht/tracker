@@ -17,4 +17,6 @@ public interface TransactionData {
     List<TransactionDataRow> addRows(List<TransactionDataRow> dataRows);
 
     List<TransactionDataRow> findConflictingRows(List<TransactionDataRow> listRows);
+
+    boolean savelAll();
 }

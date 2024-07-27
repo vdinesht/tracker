@@ -1,4 +1,4 @@
-package com.home.expense.tracker.statements;
+package com.home.expense.tracker.statementfile;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,10 +20,7 @@ public class StatementAvailabilityTest {
     @Test
     void testIfStatementsAvailableToProcess() {
 
-        if (statementFiles.isAvailable())
-            assertTrue(true);
-        else
-            assertTrue(false);
+        assertTrue(!statementFiles.getNextAvailableFilePath().isEmpty());
 
     }
 
@@ -34,15 +31,16 @@ public class StatementAvailabilityTest {
 
     @Test
     void testMovingCSVFiles()  {
-        while (statementFiles.isAvailable()){
-            String filePath = statementFiles.getNextAvailableFilePath();
+        String filePath = statementFiles.getNextAvailableFilePath();
+        while (!filePath.isEmpty()){
             System.out.println("Moving file : " + filePath);
             waitFor(30);
-            statementFileTransfer.moveStatementFile(filePath);
+            statementFileTransfer.completedStatementFileProcessing(filePath);
             System.out.println("Move completed : "+ filePath);
+            filePath = statementFiles.getNextAvailableFilePath();
         }
 
-        assertTrue(!statementFiles.isAvailable());
+        assertTrue(statementFiles.getNextAvailableFilePath().isEmpty());
     }
 
     private static void waitFor(long time) {

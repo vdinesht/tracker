@@ -1,9 +1,9 @@
-package com.home.expense.tracker.imports.impl;
+package com.home.expense.tracker.statementimport.impl;
 
-import com.home.expense.tracker.imports.AccountStatementName;
-import com.home.expense.tracker.imports.StatementMapper;
-import com.home.expense.tracker.imports.StatementMappingReader;
-import com.home.expense.tracker.imports.StatementMappingRow;
+import com.home.expense.tracker.statementimport.AccountStatementType;
+import com.home.expense.tracker.statementimport.StatementMapper;
+import com.home.expense.tracker.statementimport.StatementMappingReader;
+import com.home.expense.tracker.statementimport.StatementMappingRow;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,22 +17,22 @@ public class StatementMapperImpl implements StatementMapper {
     private final StatementMappingReader statementMappingReader = new StatementMappingCSVReader();
 
     @Override
-    public StatementMappingRow getCreditMatcher(AccountStatementName statementOf, String transactionText){
+    public StatementMappingRow getCreditMatcher(AccountStatementType statementOf, String transactionText){
         return getStatementMappingRow(statementOf, transactionText,statementMappingReader.getAllCreditMappingRows());
     }
 
     @Override
-    public StatementMappingRow getDebitMatcher(AccountStatementName statementOf, String transactionText) {
+    public StatementMappingRow getDebitMatcher(AccountStatementType statementOf, String transactionText) {
         return getStatementMappingRow(statementOf, transactionText,statementMappingReader.getAllDebitMappingRows());
     }
 
-    private StatementMappingRow getStatementMappingRow(AccountStatementName statementOf, String transactionText, List<StatementMappingRow> allRows) {
-        List<StatementMappingRow> listOfAccountStatement =allRows.stream().filter(e-> statementOf == e.statement()).collect(Collectors.toList());
+    private StatementMappingRow getStatementMappingRow(AccountStatementType statementOf, String transactionText, List<StatementMappingRow> allRows) {
+        List<StatementMappingRow> listOfAccountStatement =allRows.stream().filter(e-> statementOf == e.statement()).toList();
 
         List<StatementMappingRow> matchList = listOfAccountStatement.stream().filter(e-> {  Pattern p = Pattern.compile(e.token());
                                                                                             Matcher m = p.matcher(transactionText);
                                                                                             return m.matches();})
-                                                                                .collect(Collectors.toList());
+                                                                                .toList();
 
         return matchList.get(0);
     }

@@ -42,6 +42,7 @@ public class TransactionDataCSVReaderImpl implements TransactionDataReader {
                                             .build();
             Iterable<CSVRecord> records =  CSVParser.parse(in, cSVFormat);
             records.forEach(r-> dataRows.add(MapCSVRecordToTransactionDataRow.transform(r)));
+            in.close();
         }
         catch (FileNotFoundException ex){
             logger.error(ex.toString());
