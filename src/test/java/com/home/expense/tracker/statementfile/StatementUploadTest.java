@@ -35,8 +35,8 @@ public class StatementUploadTest {
         while (!filePath.isEmpty()){
             System.out.println("Moving file : " + filePath);
             AccountStatement statement = accountStatementFactory.getStatement(filePath);
-            transactionData.addRows(transformAccountStatementToExpenseData.transform(statement)).forEach(System.out::println);
-            assertTrue(transactionData.savelAll());
+            transactionData.addRows(transformAccountStatementToExpenseData.transform(statement));
+            assertTrue(transactionData.saveAll());
             waitFor(5);
             statementFileTransfer.completedStatementFileProcessing(filePath);
             System.out.println("Move completed : "+ filePath);

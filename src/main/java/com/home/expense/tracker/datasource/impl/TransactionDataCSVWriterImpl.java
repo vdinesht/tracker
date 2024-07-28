@@ -7,17 +7,20 @@ import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class TransactionDataCSVWriterImpl implements TransactionDataWriter {
     private final Logger logger = LoggerFactory.getLogger(TransactionDataCSVWriterImpl.class);
-    private final String transactionsDataFile = "C:\\Temp\\ExpenseTracker\\OurHomeTransactionsDataUTF8V1.csv";
+    @Autowired
+    private Environment env;
 
     @Override
     public boolean saveAll(List<TransactionDataRow> allRows){ return saveToFile(false, allRows);  }
@@ -37,20 +40,15 @@ public class TransactionDataCSVWriterImpl implements TransactionDataWriter {
             printer.close();
             fileWriter.close();
             saveSuccessful = true;
-        }
-        catch (FileNotFoundException ex){
+        } catch (IOException ex){
             logger.error(ex.toString());
-        }
-        catch (IOException ioException) {
-            logger.error(ioException.toString());
         }
         logger.info("Records saved to CSV File: " + dataRows.size());
         return saveSuccessful;
     }
 
     private FileWriter getFileWriter(boolean append) throws IOException {
-        FileWriter fileWriter = new FileWriter(transactionsDataFile,append);
-        return fileWriter;
+        return new FileWriter(Objects.requireNonNull(env.getProperty("tracker.datasource.file")),append);
     }
 
     private void printTo(CSVPrinter printer, TransactionDataRow r)  {

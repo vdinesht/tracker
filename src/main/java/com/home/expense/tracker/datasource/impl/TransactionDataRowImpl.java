@@ -7,6 +7,7 @@ import com.home.expense.tracker.core.GroupTag;
 import com.home.expense.tracker.core.PrimaryAccount;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class TransactionDataRowImpl implements TransactionDataRow {
 
@@ -148,5 +149,18 @@ public class TransactionDataRowImpl implements TransactionDataRow {
                 ", gdriveLink='" + gdriveLink + '\'' +
                 ", id=" + id +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TransactionDataRowImpl that = (TransactionDataRowImpl) o;
+        return Double.compare(that.amount, amount) == 0 && date.equals(that.date) && currency == that.currency && debitAccount == that.debitAccount && creditAccount == that.creditAccount && debitSubAccount == that.debitSubAccount && creditSubAccount == that.creditSubAccount;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(date, amount, currency, debitAccount, creditAccount, debitSubAccount, creditSubAccount);
     }
 }

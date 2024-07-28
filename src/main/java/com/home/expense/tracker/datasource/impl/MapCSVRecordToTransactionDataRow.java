@@ -15,11 +15,11 @@ import java.util.stream.Collectors;
 
 public final class MapCSVRecordToTransactionDataRow {
 
-    private final static Map<String, PrimaryAccount> mapPrimaryAccountToValue = EnumSet.allOf(PrimaryAccount.class).stream().collect(Collectors.toMap(e->e.name(), e->e));
-    private final static Map<String, SubAccount> mapSubAccountToValue = EnumSet.allOf(SubAccount.class).stream().collect(Collectors.toMap(e->e.name(), e->e));
-    private final static Map<String, GroupTag> mapGroupTagToValue = EnumSet.allOf(GroupTag.class).stream().collect(Collectors.toMap(e->e.name(), e->e));
+    private final static Map<String, PrimaryAccount> mapPrimaryAccountToValue = EnumSet.allOf(PrimaryAccount.class).stream().collect(Collectors.toMap(Enum::name, e->e));
+    private final static Map<String, SubAccount> mapSubAccountToValue = EnumSet.allOf(SubAccount.class).stream().collect(Collectors.toMap(SubAccount::getValue, e->e));
+    private final static Map<String, GroupTag> mapGroupTagToValue = EnumSet.allOf(GroupTag.class).stream().collect(Collectors.toMap(Enum::name, e->e));
 
-    private final static Map<String, TransactionCurrency> mapCurrencyToValue = EnumSet.allOf(TransactionCurrency.class).stream().collect(Collectors.toMap(e->e.name(), e->e));
+    private final static Map<String, TransactionCurrency> mapCurrencyToValue = EnumSet.allOf(TransactionCurrency.class).stream().collect(Collectors.toMap(Enum::name, e->e));
 
     private MapCSVRecordToTransactionDataRow(){}
     public static TransactionDataRow transform(CSVRecord record){

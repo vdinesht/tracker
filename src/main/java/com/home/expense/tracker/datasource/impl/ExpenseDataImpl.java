@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Service
@@ -62,7 +63,8 @@ public class ExpenseDataImpl implements TransactionData {
     public List<TransactionDataRow> addRows(List<TransactionDataRow> dataRows) {
         int rowIndex = getMaxIndex()+1;
         List<TransactionDataRow> listOfNewRows = new ArrayList<>();
-        for (TransactionDataRow row : findNewRows(dataRows)) {
+        List<TransactionDataRow> listOfRowsToAdd = findNewRows(dataRows).stream().sorted(Comparator.comparingLong(s -> s.date().toEpochDay())).toList();
+        for (TransactionDataRow row : listOfRowsToAdd) {
             listOfNewRows.add(newDataRow(row, rowIndex++));
         }
         getAllRows().addAll(listOfNewRows);
@@ -84,43 +86,40 @@ public class ExpenseDataImpl implements TransactionData {
         newRow.setGdriveLink(r.gdriveLink());
         return newRow;
     }
-    @Override
-    public List<TransactionDataRow> findConflictingRows(List<TransactionDataRow> listRows) {
-        Set<KeyTransactionDataRow> setExistingTransactionRows = new HashSet<>(getKeyRows(getAllRows()));
-        Map<KeyTransactionDataRow, TransactionDataRow> mapNewRows = getMapKeyRowToTransacationRow(listRows);
-        Set<KeyTransactionDataRow> setNewTransactionRows = new HashSet<>(mapNewRows.keySet());
-
-        setExistingTransactionRows.retainAll(setNewTransactionRows);
-        setNewTransactionRows.retainAll(setExistingTransactionRows);
-
-        return setNewTransactionRows.stream().map(mapNewRows::get).collect(Collectors.toList());
-    }
 
     @Override
-    public boolean savelAll() {
+    public boolean saveAll() {
         return expenseWriter.saveAll(getAllRows());
     }
 
     private int getMaxIndex(){
-        return  getAllRows().stream().mapToInt(e -> e.id()).max().getAsInt();
-    }
-
-    private List<KeyTransactionDataRow> getKeyRows(List<TransactionDataRow> dataRows){
-        return dataRows.stream().map(KeyTransactionDataRow::new).collect(Collectors.toList());
-    }
-
-    private Map<KeyTransactionDataRow, TransactionDataRow> getMapKeyRowToTransacationRow(List<TransactionDataRow> dataRows){
-        return dataRows.stream().collect(Collectors.toMap(KeyTransactionDataRow::new, e->e));
+        return  getAllRows().stream().mapToInt(TransactionDataRow::id).max().getAsInt();
     }
 
     private List<TransactionDataRow> findNewRows(List<TransactionDataRow> listRows) {
-        Set<KeyTransactionDataRow> setExistingTransactionRows = new HashSet<>(getKeyRows(getAllRows()));
-        Map<KeyTransactionDataRow, TransactionDataRow> mapNewRows = getMapKeyRowToTransacationRow(listRows);
-        Set<KeyTransactionDataRow> setNewTransactionRows = new HashSet<>(mapNewRows.keySet());
+        logger.info("Number of new rows being requested for addition :" + listRows.size());
+        Set<TransactionDataRow> setExistingTransactionRows = new HashSet<>(getAllRows());
+        Set<TransactionDataRow> setNewTransactionRows = new HashSet<>(listRows);
+        logger.info("Number of new rows after addition to set :" + setNewTransactionRows.size());
+
+        List<TransactionDataRow> tempNewList = listRows.stream().collect(Collectors.groupingBy(Function.identity()))
+                        .entrySet()
+                        .stream()
+                        .filter(e -> e.getValue().size() > 1)
+                        .map(Map.Entry::getKey)
+                        .toList();
+
+        logger.info("Duplicate rows being added are : ");
+        logger.info(tempNewList.toString());
 
         setExistingTransactionRows.retainAll(setNewTransactionRows);
-        setNewTransactionRows.removeAll(setExistingTransactionRows);
+        logger.info("Number of duplicate rows found :" + setExistingTransactionRows.size());
+        logger.info(setExistingTransactionRows.toString());
 
-        return setNewTransactionRows.stream().map(mapNewRows::get).collect(Collectors.toList());
+        setNewTransactionRows.removeAll(setExistingTransactionRows);
+        logger.info("Number of new rows being added :" + setNewTransactionRows.size());
+
+        return new ArrayList<>(setNewTransactionRows);
     }
+
 }
