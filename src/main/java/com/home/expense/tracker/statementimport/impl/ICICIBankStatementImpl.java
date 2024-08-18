@@ -1,8 +1,8 @@
 package com.home.expense.tracker.statementimport.impl;
 
 import com.home.expense.tracker.statementimport.AccountStatement;
-import com.home.expense.tracker.statementimport.AccountStatementType;
 import com.home.expense.tracker.statementimport.AccountStatementRow;
+import com.home.expense.tracker.statementimport.AccountStatementType;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -19,6 +19,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class ICICIBankStatementImpl implements AccountStatement {
@@ -48,6 +52,7 @@ public class ICICIBankStatementImpl implements AccountStatement {
     private List<AccountStatementRow> fillDataRows(String statementFile) {
         try{
             readFromCSVFile(statementFile);
+            updateDuplicateDescriptionsOnSameDateAndAmount();
         } catch (IOException ex){
             logger.error(ex.toString());
         }
@@ -55,6 +60,23 @@ public class ICICIBankStatementImpl implements AccountStatement {
         return this.dataRowList;
     }
 
+    private void updateDuplicateDescriptionsOnSameDateAndAmount(){
+        List<AccountStatementRow> duplicateDescriptionList = this.dataRowList.stream().collect(Collectors.groupingBy(Function.identity()))
+                .entrySet()
+                .stream()
+                .filter(e -> e.getValue().size() > 1)
+                .map(Map.Entry::getKey)
+                .toList();
+
+        logger.info("Duplicate rows in ICICI statement:" + duplicateDescriptionList);
+        AtomicInteger i = new AtomicInteger(0);
+        duplicateDescriptionList.forEach(e->{
+            List<AccountStatementRow> duplicateRows = this.dataRowList.stream().filter(d->d.equals(e)).toList();
+            duplicateRows.forEach(c-> c.setTransactionDescription(c.transactionDescription()+"-"+ i.addAndGet(1)));
+            logger.info("Updated Rows :" + duplicateRows);
+        });
+
+    }
     private void readFromCSVFile(String statementFile) throws IOException {
         Reader in = new FileReader(statementFile, StandardCharsets.UTF_8);
         CSVFormat cSVFormat = CSVFormat.DEFAULT.builder().build();

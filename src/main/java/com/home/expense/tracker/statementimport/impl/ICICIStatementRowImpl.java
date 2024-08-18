@@ -5,6 +5,7 @@ import com.home.expense.tracker.statementimport.AccountStatementRow;
 import com.home.expense.tracker.statementimport.StatementTransactionType;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class ICICIStatementRowImpl implements AccountStatementRow {
 
@@ -43,13 +44,15 @@ public class ICICIStatementRowImpl implements AccountStatementRow {
     public StatementTransactionType transactionType() {
         return this.transactionType;
     }
+
+    @Override
+    public void setTransactionDescription(String description) {
+        setTransactionRemarks(description);
+    }
+
     @Override
     public LocalDate transactionDate() {
         return this.transactionDate;
-    }
-    @Override
-    public int sno() {
-        return this.row;
     }
 
     public void setRow(int row) {
@@ -102,5 +105,18 @@ public class ICICIStatementRowImpl implements AccountStatementRow {
                 ", balance=" + balance +
                 ", transactionType=" + transactionType +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ICICIStatementRowImpl that = (ICICIStatementRowImpl) o;
+        return transactionDate.equals(that.transactionDate) && transactionCurrency == that.transactionCurrency && transactionRemarks.equals(that.transactionRemarks) && withdrawAmount.equals(that.withdrawAmount) && depositAmount.equals(that.depositAmount) && transactionType == that.transactionType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(transactionDate, transactionCurrency, transactionRemarks, withdrawAmount, depositAmount, transactionType);
     }
 }

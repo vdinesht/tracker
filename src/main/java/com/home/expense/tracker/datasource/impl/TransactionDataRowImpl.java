@@ -25,6 +25,10 @@ public class TransactionDataRowImpl implements TransactionDataRow {
     private String gdriveLink;
     private int id;
 
+    public TransactionDataRowImpl(int i) {
+        this.id = i;
+    }
+
     public void setDate(LocalDate date) {
         this.date = date;
     }
@@ -69,8 +73,8 @@ public class TransactionDataRowImpl implements TransactionDataRow {
         this.gdriveLink = gdriveLink;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void id(int i) {
+        this.id = i;
     }
 
     @Override
@@ -151,16 +155,31 @@ public class TransactionDataRowImpl implements TransactionDataRow {
                 '}';
     }
 
+    public TransactionDataRowImpl(TransactionDataRow other) {
+        this.date = other.date();
+        this.amount = other.amount();
+        this.currency = other.currency();
+        this.description = other.description();
+        this.debitAccount = other.debitAccount();
+        this.creditAccount = other.creditAccount();
+        this.debitSubAccount = other.debitSubAccount();
+        this.creditSubAccount = other.creditSubAccount();
+        this.transType2015 = other.transType2015();
+        this.groupTag = other.groupTag();
+        this.gdriveLink = other.gdriveLink();
+        this.id = other.id();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TransactionDataRowImpl that = (TransactionDataRowImpl) o;
-        return Double.compare(that.amount, amount) == 0 && date.equals(that.date) && currency == that.currency && debitAccount == that.debitAccount && creditAccount == that.creditAccount && debitSubAccount == that.debitSubAccount && creditSubAccount == that.creditSubAccount;
+        return Double.compare(that.amount, amount) == 0 && date.equals(that.date) && currency == that.currency && description.equals(that.description) && debitAccount == that.debitAccount && creditAccount == that.creditAccount && debitSubAccount == that.debitSubAccount && creditSubAccount == that.creditSubAccount;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(date, amount, currency, debitAccount, creditAccount, debitSubAccount, creditSubAccount);
+        return Objects.hash(date, amount, currency, description, debitAccount, creditAccount, debitSubAccount, creditSubAccount);
     }
 }

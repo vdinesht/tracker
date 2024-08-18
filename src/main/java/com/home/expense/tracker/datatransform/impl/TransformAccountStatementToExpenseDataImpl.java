@@ -34,7 +34,7 @@ public class TransformAccountStatementToExpenseDataImpl implements TransformAcco
     }
 
     private static TransactionDataRow getTransactionDataRow(StatementMappingRow statementMappingRow, AccountStatementRow statementRow) {
-        TransactionDataRowImpl transactionDataRow = new TransactionDataRowImpl();
+        TransactionDataRowImpl transactionDataRow = new TransactionDataRowImpl(0);
 
         transactionDataRow.setDate(statementRow.transactionDate());
         transactionDataRow.setCurrency(statementRow.currency());

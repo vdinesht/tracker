@@ -8,6 +8,8 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.Objects;
 
 @Service
 public class StatementFileTransferImpl implements StatementFileTransfer {
@@ -20,8 +22,9 @@ public class StatementFileTransferImpl implements StatementFileTransfer {
     public boolean completedStatementFileProcessing(String fullFilePath) {
         try {
             Writer output;
-            output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(env.getProperty("tracker.statements.processed.statusfile"), true), "UTF-8"));
+            output = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(Objects.requireNonNull(env.getProperty("tracker.statements.processed.statusfile")), true), StandardCharsets.UTF_8));
             output.append(fullFilePath);
+
             output.close();
             return true;
         }
@@ -31,8 +34,4 @@ public class StatementFileTransferImpl implements StatementFileTransfer {
         }
     }
 
-    private String getFileNameOnly(String fullFilePath){
-        File file = new File(fullFilePath);
-        return file.getName();
-    }
 }

@@ -21,4 +21,5 @@ public interface TransactionDataRow {
     GroupTag groupTag();
     String gdriveLink();
     int id();
+    void id(int i);
 }

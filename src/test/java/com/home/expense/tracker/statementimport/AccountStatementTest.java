@@ -17,7 +17,8 @@ public class AccountStatementTest {
 
     @Test
     void testAccountStatementReader(){
-        String statementFile = "C:\\Temp\\ExpenseTracker\\BankStatement\\OpTransactionHistory1JanTo31Dec2023UTF8.csv";
+        //String statementFile = "C:\\Temp\\ExpenseTracker\\BankStatement\\OpTransactionHistory1Jan2024To31Jul2024.csv";
+        String statementFile = "C:\\Temp\\ExpenseTracker\\StatementFolder\\OpTransactionHistory1JanTo31Dec2023UTF8.csv";
         AccountStatement statement = statementFactory.getStatement(statementFile);
         assertTrue(statement.getAllRows().size()>0);
 

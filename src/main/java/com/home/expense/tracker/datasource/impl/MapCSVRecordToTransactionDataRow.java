@@ -16,14 +16,14 @@ import java.util.stream.Collectors;
 public final class MapCSVRecordToTransactionDataRow {
 
     private final static Map<String, PrimaryAccount> mapPrimaryAccountToValue = EnumSet.allOf(PrimaryAccount.class).stream().collect(Collectors.toMap(Enum::name, e->e));
-    private final static Map<String, SubAccount> mapSubAccountToValue = EnumSet.allOf(SubAccount.class).stream().collect(Collectors.toMap(SubAccount::getValue, e->e));
+    private final static Map<String, SubAccount> mapSubAccountToValue = EnumSet.allOf(SubAccount.class).stream().collect(Collectors.toMap(e->e.getValue(), e->e));
     private final static Map<String, GroupTag> mapGroupTagToValue = EnumSet.allOf(GroupTag.class).stream().collect(Collectors.toMap(Enum::name, e->e));
 
     private final static Map<String, TransactionCurrency> mapCurrencyToValue = EnumSet.allOf(TransactionCurrency.class).stream().collect(Collectors.toMap(Enum::name, e->e));
 
     private MapCSVRecordToTransactionDataRow(){}
     public static TransactionDataRow transform(CSVRecord record){
-        TransactionDataRowImpl transactionDataRow = new TransactionDataRowImpl();
+        TransactionDataRowImpl transactionDataRow = new TransactionDataRowImpl(0);
 
         transactionDataRow.setDate(extractDate(record.get(TransactionDataHeader.Date)));
         transactionDataRow.setAmount(extractAmount(record.get(TransactionDataHeader.Amount)));
@@ -36,7 +36,7 @@ public final class MapCSVRecordToTransactionDataRow {
         transactionDataRow.setTransType2015(record.get(TransactionDataHeader.Type));
         transactionDataRow.setGroupTag(extractGroupTag(record.get(TransactionDataHeader.GroupTag)));
         transactionDataRow.setGdriveLink(record.get(TransactionDataHeader.GLinkDrive));
-        transactionDataRow.setId(extractId(record.get(TransactionDataHeader.ID)));
+        transactionDataRow.id(extractId(record.get(TransactionDataHeader.ID)));
 
         return transactionDataRow;
     }
@@ -46,7 +46,7 @@ public final class MapCSVRecordToTransactionDataRow {
     }
 
     private static double extractAmount(String amountString){
-        return Double.parseDouble(amountString);
+        return Double.parseDouble(String.format("%.2f", Double.parseDouble(amountString.replace(",", ""))));
     }
 
     private static SubAccount extractDebitSubAccount(String debitAcc){

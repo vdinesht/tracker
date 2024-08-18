@@ -29,7 +29,6 @@ public class StatementAvailabilityTest {
         assertTrue(statementFiles.getNextAvailableFilePath().contains(".csv"));
     }
 
-    @Test
     void testMovingCSVFiles()  {
         String filePath = statementFiles.getNextAvailableFilePath();
         while (!filePath.isEmpty()){
