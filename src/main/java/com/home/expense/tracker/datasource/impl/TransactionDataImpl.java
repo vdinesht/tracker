@@ -43,9 +43,11 @@ public class TransactionDataImpl implements TransactionData {
 
     @Override
     public List<TransactionDataRow> getRows(LocalDate from, LocalDate to) {
-        return getAllRows().stream().filter(e->  e.date().isAfter(from) && e.date().isBefore(to)).collect(Collectors.toList());
+        return getAllRows().stream().filter(e-> isBetweenDates(e,from,to)).collect(Collectors.toList());
     }
-
+    private static boolean isBetweenDates(TransactionDataRow row, LocalDate from, LocalDate to){
+        return row.date().isAfter(from.minusDays(1)) && row.date().isBefore(to.plusDays(1));
+    }
     @Override
     public List<TransactionDataRow> getRows(List<Integer> listIds) {
         return getAllRows().stream().filter(e-> listIds.contains(e.id())).collect(Collectors.toList());
@@ -53,12 +55,12 @@ public class TransactionDataImpl implements TransactionData {
 
     @Override
     public List<TransactionDataRow> getDebitRows(LocalDate from, LocalDate to, PrimaryAccount acc) {
-        return getAllRows().stream().filter(e->  e.date().isAfter(from) && e.date().isBefore(to) && e.debitAccount() == acc).collect(Collectors.toList());
+        return getAllRows().stream().filter(e-> isBetweenDates(e,from,to) && e.debitAccount() == acc).collect(Collectors.toList());
     }
 
     @Override
     public List<TransactionDataRow> getCreditRows(LocalDate from, LocalDate to, PrimaryAccount acc) {
-        return getAllRows().stream().filter(e->  e.date().isAfter(from) && e.date().isBefore(to) && e.creditAccount() == acc).collect(Collectors.toList());
+        return getAllRows().stream().filter(e-> isBetweenDates(e,from,to) && e.creditAccount() == acc).collect(Collectors.toList());
     }
 
     @Override

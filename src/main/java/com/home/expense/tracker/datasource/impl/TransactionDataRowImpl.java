@@ -3,7 +3,7 @@ package com.home.expense.tracker.datasource.impl;
 import com.home.expense.tracker.core.SubAccount;
 import com.home.expense.tracker.core.TransactionCurrency;
 import com.home.expense.tracker.datasource.TransactionDataRow;
-import com.home.expense.tracker.core.GroupTag;
+import com.home.expense.tracker.entities.GroupTag;
 import com.home.expense.tracker.core.PrimaryAccount;
 
 import java.time.LocalDate;

@@ -53,7 +53,7 @@ public class StatementUploadTest {
     }
 
     private List<TransactionDataRow> findConflictsInTransactionDataRows(List<TransactionDataRow> rowsToAdd) {
-        List<Integer> duplicateList = FindDuplicatesInExpenseData.findMatchingRowsExcludingDescription(transactionData, rowsToAdd.get(0).date().minusDays(1));
+        List<Integer> duplicateList = FindDuplicatesInExpenseData.findMatchingRowsExcludingDescription(transactionData, rowsToAdd.get(0).date());
         List<TransactionDataRow> duplicateRows = transactionData.getRows(duplicateList);
         return duplicateRows;
     }
