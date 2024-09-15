@@ -11,6 +11,7 @@ import org.springframework.core.env.Environment;
 
 import java.util.Objects;
 
+import static com.home.expense.tracker.entities.datasource.impl.GetTransactionDataSourceFileName.getDataSourceFilePath;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
@@ -21,7 +22,7 @@ public class ExpenseDataSourceCSVWriteTest {
 
     @Test
     void dataCSVWriteTest(){
-        TransactionDataReader transactionDataReader = new TransactionDataCSVReaderImpl(Objects.requireNonNull(env.getProperty("tracker.datasource.file")));
+        TransactionDataReader transactionDataReader = new TransactionDataCSVReaderImpl(getDataSourceFilePath(env));
         System.out.println("Expense Data Row Count being written: " + transactionDataReader.getAllRows().size());
         String testWriterPath = "C:\\Temp\\ExpenseTracker\\Test\\OurHomeTransactionsDataUTF8TV2.csv";
         System.out.println("Writing Expense Data to file: " + testWriterPath);

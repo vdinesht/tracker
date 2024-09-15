@@ -1,6 +1,7 @@
 package com.home.expense.tracker.entities.datasource.impl;
 
 import com.home.expense.tracker.entities.PrimaryAccount;
+import com.home.expense.tracker.entities.SubAccount;
 import com.home.expense.tracker.entities.datasource.TransactionData;
 import com.home.expense.tracker.entities.datasource.TransactionDataReader;
 import com.home.expense.tracker.entities.datasource.TransactionDataRow;
@@ -21,7 +22,7 @@ public class TransactionDataImpl implements TransactionData {
     private final Logger logger = LoggerFactory.getLogger(TransactionDataImpl.class);
 
     private List<TransactionDataRow> dataRows = new ArrayList<>();
-
+    private final LocalDate accountKeepingFirstDate = LocalDate.of(2000,1,1);
     @Autowired
     private Environment env;
 
@@ -64,6 +65,26 @@ public class TransactionDataImpl implements TransactionData {
     @Override
     public double getDebitSum(LocalDate from, LocalDate to, PrimaryAccount type) {
         return getDebitRows(from, to,type).stream().mapToDouble(TransactionDataRow::amount).sum();
+    }
+
+    @Override
+    public double getDebitSum(LocalDate from, LocalDate to, PrimaryAccount type, SubAccount subAccount) {
+        return getDebitRows(from, to,type).stream().filter(e->e.debitSubAccount() == subAccount).mapToDouble(TransactionDataRow::amount).sum();
+    }
+
+    @Override
+    public double getCreditSum(LocalDate from, LocalDate to, PrimaryAccount type, SubAccount subAccount) {
+        return getCreditRows(from, to,type).stream().filter(e->e.creditSubAccount() == subAccount).mapToDouble(TransactionDataRow::amount).sum();
+    }
+
+    @Override
+    public double getDebitSum(PrimaryAccount type, SubAccount subAccount, LocalDate until) {
+        return getDebitSum(accountKeepingFirstDate,until, type, subAccount);
+    }
+
+    @Override
+    public double getCreditSum(PrimaryAccount type, SubAccount subAccount, LocalDate until) {
+        return getCreditSum(accountKeepingFirstDate, until, type, subAccount);
     }
 
     @Override

@@ -9,9 +9,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-public class TransactionDataCSVReaderImpl extends CSVFileReader<TransactionDataRow, TransactionDataHeader>implements TransactionDataReader {
+public class TransactionDataCSVReaderImpl extends CSVFileReader<TransactionDataRow>implements TransactionDataReader {
     private final Logger logger = LoggerFactory.getLogger(TransactionDataCSVReaderImpl.class);
 
     private List<TransactionDataRow> dataRows = new ArrayList<>();
@@ -24,7 +25,7 @@ public class TransactionDataCSVReaderImpl extends CSVFileReader<TransactionDataR
     @Override
     public List<TransactionDataRow> getAllRows()  {
         if (dataRows.isEmpty())
-            this.dataRows = readAllRows(this.filePath);
+            this.dataRows = readAllRows(Arrays.stream(TransactionDataHeader.values()).map(Enum::name).toArray(String[]::new), this.filePath);
 
         return this.dataRows;
     }

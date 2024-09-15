@@ -1,14 +1,16 @@
 package com.home.expense.tracker.entities.datasource.impl;
 
 import com.home.expense.tracker.entities.csvfile.CSVFileWriter;
+import com.home.expense.tracker.entities.datasource.TransactionDataHeader;
 import com.home.expense.tracker.entities.datasource.TransactionDataRow;
 import com.home.expense.tracker.entities.datasource.TransactionDataWriter;
 import org.apache.commons.csv.CSVPrinter;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
-public class TransactionDataCSVWriterImpl extends CSVFileWriter implements TransactionDataWriter  {
+public class TransactionDataCSVWriterImpl extends CSVFileWriter<TransactionDataRow> implements TransactionDataWriter  {
 
     private final String filePath;
 
@@ -35,12 +37,12 @@ public class TransactionDataCSVWriterImpl extends CSVFileWriter implements Trans
 
     @Override
     public boolean saveAll(List<TransactionDataRow> allRows) {
-        return saveAllRowsToFile(allRows, this.filePath);
+        return saveAllRowsToFile(Arrays.stream(TransactionDataHeader.values()).map(Enum::name).toArray(String[]::new),allRows, this.filePath);
     }
 
     @Override
     public boolean addAll(List<TransactionDataRow> allRows) {
-        return addAllRowsToFile(allRows, this.filePath);
+        return addAllRowsToFile(Arrays.stream(TransactionDataHeader.values()).map(Enum::name).toArray(String[]::new), allRows, this.filePath);
     }
 
 }

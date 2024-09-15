@@ -1,7 +1,5 @@
 package com.home.expense.tracker.entities.csvfile;
 
-import com.home.expense.tracker.entities.datasource.TransactionDataHeader;
-import com.home.expense.tracker.entities.datasource.TransactionDataRow;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.slf4j.Logger;
@@ -11,19 +9,20 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
-public abstract class CSVFileWriter {
+public abstract class CSVFileWriter <T> {
     private final Logger logger = LoggerFactory.getLogger(CSVFileWriter.class);
 
-    protected boolean saveAllRowsToFile(List<TransactionDataRow> allRows, String filePath){ return saveToFile(false, allRows, filePath);  }
+    protected boolean saveAllRowsToFile(String headers[], List<T> allRows, String filePath){ return saveToFile(false, headers, allRows, filePath);  }
 
-    protected boolean addAllRowsToFile(List<TransactionDataRow> allRows, String filePath) { return saveToFile(true, allRows, filePath); }
+    protected boolean addAllRowsToFile(String headers[], List<T> allRows, String filePath) { return saveToFile(true, headers, allRows, filePath); }
 
-    protected boolean saveToFile(boolean append, List<TransactionDataRow> dataRows, String filePath) {
+    protected boolean saveToFile(boolean append, String headers[], List<T> dataRows, String filePath) {
         boolean saveSuccessful = false;
+
         try{
             FileWriter fileWriter = getFileWriter(append, filePath);
             CSVPrinter printer = CSVFormat.DEFAULT.builder()
-                    .setHeader(TransactionDataHeader.class)
+                    .setHeader(headers)
                     .build()
                     .print(fileWriter);
             dataRows.forEach(r-> {
@@ -47,6 +46,6 @@ public abstract class CSVFileWriter {
         return new FileWriter(filePath,append);
     }
 
-    protected abstract void printTo(CSVPrinter printer, TransactionDataRow r) throws IOException;
+    protected abstract void printTo(CSVPrinter printer, T row) throws IOException;
 
 }

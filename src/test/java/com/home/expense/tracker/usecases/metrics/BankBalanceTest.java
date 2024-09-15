@@ -1,6 +1,6 @@
 package com.home.expense.tracker.usecases.metrics;
 
-import com.home.expense.tracker.entities.statementimport.AccountStatementType;
+import com.home.expense.tracker.entities.SubAccount;
 import com.home.expense.tracker.usercases.metrics.BankBalance;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class BankBalanceTest {
 
     @Test
     void testBalance(){
-        System.out.println("Bank balance: " + bankBalance.getBalance(AccountStatementType.BankICICIThoraipakkamDinesh,LocalDate.of(2021,1,1), LocalDate.of(2024,1,31)));
+        System.out.println("Bank balance: " + bankBalance.getBalance(SubAccount.Bank_ICICI_Thoraipakkam_Dinesh,LocalDate.of(2021,1,1), LocalDate.of(2021,12,31)));
         assertTrue(true);
     }
 }

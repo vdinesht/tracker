@@ -1,6 +1,5 @@
 package com.home.expense.tracker.entities.csvfile;
 
-import com.home.expense.tracker.entities.datasource.TransactionDataHeader;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
@@ -14,19 +13,19 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class CSVFileReader<T, E extends Enum<E>> {
+public abstract class CSVFileReader<T> {
     private final Logger logger = LoggerFactory.getLogger(CSVFileReader.class);
 
-    protected List<T> readAllRows(String strFilePath)  {
-            return fillDataRows((Class<E>) TransactionDataHeader.class, strFilePath);
+    protected List<T> readAllRows(String headers[], String strFilePath)  {
+            return fillDataRows(headers, strFilePath);
     }
 
-    private List<T> fillDataRows(Class<E> enumClass, String strFilePath) {
+    private List<T> fillDataRows(String headers[], String strFilePath) {
         List<T> dataRows = new ArrayList<>();
         try{
             Reader in = new FileReader(strFilePath, StandardCharsets.UTF_8);
             CSVFormat cSVFormat = CSVFormat.DEFAULT.builder()
-                    .setHeader(enumClass)
+                    .setHeader(headers)
                     .setSkipHeaderRecord(true)
                     .build();
             Iterable<CSVRecord> records =  CSVParser.parse(in, cSVFormat);
