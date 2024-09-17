@@ -44,11 +44,15 @@ public class BankBalanceExcelReportImpl implements BankBalanceExcelReport {
         AtomicLong atomicLong = new AtomicLong(Math.round(bankBalance.getBalance(bankAccount,response.fromDate().minusDays(1))*100));
         listAllRows.forEach(e-> {
             if (e.debitAccount() == PrimaryAccount.BankAsset && e.debitSubAccount() == bankAccount)//Income - add balance
-                e.balance(atomicLong.addAndGet(Math.round(e.amount()*100)));
+                e.balance(getBalanceAsDouble(atomicLong.addAndGet(Math.round(e.amount()*100))));
             else if (e.creditAccount() == PrimaryAccount.BankAsset && e.creditSubAccount() == bankAccount) //expense - reduce balance
-                e.balance(atomicLong.addAndGet(Math.round(e.amount()*-100)));
+                e.balance(getBalanceAsDouble(atomicLong.addAndGet(Math.round(e.amount()*-100))));
             });
         return listAllRows;
+    }
+
+    private double getBalanceAsDouble(long balanceInPaisa){
+        return Double.valueOf(balanceInPaisa)/100D;
     }
 
     private ReportResponse getReport(SubAccount bankAccount, LocalDate from, LocalDate to) {

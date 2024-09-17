@@ -1,6 +1,6 @@
 package com.home.expense.tracker.entities.datasource.impl;
 
-import com.home.expense.tracker.entities.csvfile.CSVFileReader;
+import com.home.expense.tracker.boundryobjects.reports.csvfile.CSVFileReader;
 import com.home.expense.tracker.entities.datasource.TransactionDataHeader;
 import com.home.expense.tracker.entities.datasource.TransactionDataReader;
 import com.home.expense.tracker.entities.datasource.TransactionDataRow;

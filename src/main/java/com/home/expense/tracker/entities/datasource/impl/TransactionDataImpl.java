@@ -35,7 +35,7 @@ public class TransactionDataImpl implements TransactionData {
 
     private void loadData() {
         TransactionDataReader transactionDataReader = new TransactionDataCSVReaderImpl(GetTransactionDataSourceFileName.getDataSourceFilePath(env));
-        logger.info("Reading Expense Data from file: " + env.getProperty("tracker.datasource.file"));
+        logger.info("Reading Expense Data from file: " + GetTransactionDataSourceFileName.getDataSourceFilePath(env));
         dataRows.addAll(transactionDataReader.getAllRows());
         logger.info("Expense Data Row Count read: " + getAllRows().size());
     }
@@ -48,8 +48,8 @@ public class TransactionDataImpl implements TransactionData {
         return row.date().isAfter(from.minusDays(1)) && row.date().isBefore(to.plusDays(1));
     }
     @Override
-    public List<TransactionDataRow> getRows(List<Integer> listIds) {
-        return getAllRows().stream().filter(e-> listIds.contains(e.id())).collect(Collectors.toList());
+    public List<TransactionDataRow> getRows(List<Integer> listRowId) {
+        return getAllRows().stream().filter(e-> listRowId.contains(e.id())).collect(Collectors.toList());
     }
 
     @Override
@@ -102,11 +102,11 @@ public class TransactionDataImpl implements TransactionData {
     }
 
     @Override
-    public TransactionDataRow deleteRow(int row) {
-        Optional<TransactionDataRow> rowToDelete = getAllRows().stream().filter(e->e.id()==row).findFirst();
+    public TransactionDataRow deleteRow(int rowId) {
+        Optional<TransactionDataRow> rowToDelete = getAllRows().stream().filter(e->e.id()== rowId).findFirst();
         TransactionDataRow deletedRow;
         deletedRow = rowToDelete.map(TransactionDataRowImpl::new).orElseGet(() -> new TransactionDataRowImpl(0));
-        getAllRows().removeIf(e->e.id()==row);
+        getAllRows().removeIf(e->e.id()== rowId);
 
         return deletedRow;
     }
@@ -119,8 +119,8 @@ public class TransactionDataImpl implements TransactionData {
 
     @Override
     public boolean saveAll() {
-        TransactionDataWriter transactionDataWriter = new TransactionDataCSVWriterImpl(Objects.requireNonNull(env.getProperty("tracker.datasource.file")));
-        logger.info("Saving Expense Data to file: " + env.getProperty("tracker.datasource.file"));
+        TransactionDataWriter transactionDataWriter = new TransactionDataCSVWriterImpl(GetTransactionDataSourceFileName.getDataSourceFilePath(env));
+        logger.info("Saving Expense Data to file: " + GetTransactionDataSourceFileName.getDataSourceFilePath(env));
         sortAndUpdateRowId();
         return transactionDataWriter.saveAll(getAllRows());
     }

@@ -22,5 +22,5 @@ public interface BankTransactionDataRow {
     int id();
 
     double balance();
-    void balance(Long balance);
+    void balance(double balance);
 }

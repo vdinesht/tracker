@@ -86,9 +86,7 @@ public class BankTransactionDataRowImpl implements BankTransactionDataRow {
     }
 
     @Override
-    public void balance(Long balanceInPaisa) {
-        this.balance = Double.valueOf(balanceInPaisa/100 );
-    }
+    public void balance(double value) { this.balance = value; }
 
     public BankTransactionDataRowImpl(TransactionDataRow row) {
         this.id = row.id();

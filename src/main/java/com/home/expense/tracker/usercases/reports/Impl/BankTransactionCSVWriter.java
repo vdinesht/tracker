@@ -1,6 +1,6 @@
 package com.home.expense.tracker.usercases.reports.Impl;
 
-import com.home.expense.tracker.entities.csvfile.CSVFileWriter;
+import com.home.expense.tracker.boundryobjects.reports.csvfile.CSVFileWriter;
 import com.home.expense.tracker.usercases.reports.BankTransactionDataHeader;
 import com.home.expense.tracker.usercases.reports.BankTransactionDataRow;
 import org.apache.commons.csv.CSVPrinter;
