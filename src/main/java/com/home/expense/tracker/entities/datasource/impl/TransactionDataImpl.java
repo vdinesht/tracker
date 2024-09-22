@@ -13,7 +13,10 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
@@ -109,6 +112,15 @@ public class TransactionDataImpl implements TransactionData {
         getAllRows().removeIf(e->e.id()== rowId);
 
         return deletedRow;
+    }
+
+    @Override
+    public boolean updateRow(int rowId, TransactionDataRow row) {
+        deleteRow(rowId);
+        if (addRows(List.of(row)).size() > 0)
+            return true;
+        else
+            return false;
     }
 
     private void sortAndUpdateRowId() {

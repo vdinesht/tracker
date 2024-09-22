@@ -6,6 +6,7 @@ import com.home.expense.tracker.entities.datasource.impl.TransactionDataRowImpl;
 import com.home.expense.tracker.entities.datatransform.impl.FindDuplicatesInExpenseData;
 import com.home.expense.tracker.usercases.excelreports.BankBalanceExcelReport;
 import com.home.expense.tracker.usercases.metrics.BankBalance;
+import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +14,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -43,6 +46,31 @@ public class TransactionDataTest {
         assertTrue(FindDuplicatesInExpenseData.findMatchingRowsExcludingDescription(expenseData, from).size() > 0);
     }
 
+    @Test
+    void testUpdateRow(){
+        Random random = new Random();
+        String testPhrase = "-Updated*PasswordAbraCadara";
+
+        int testId = random.nextInt(100, 10000);
+        TransactionDataRow row = expenseData.getRows(List.of(testId)).get(0);
+        TransactionDataRowImpl newRow = new TransactionDataRowImpl(row);
+        newRow.setDebitAccount(PrimaryAccount.BankAsset);
+        newRow.setDebitSubAccount(SubAccount.Bank_ICICI_Thoraipakkam_Dinesh);
+        newRow.setCreditAccount(PrimaryAccount.DigitalPay);
+        newRow.setCreditSubAccount(SubAccount.Caterpillar_India);
+        newRow.setDescription(row.description() + testPhrase);
+        newRow.setDate(LocalDate.now());
+
+
+        long rowCountBeforeChange = expenseData.count();
+        expenseData.updateRow(testId, newRow);
+        assertEquals(expenseData.count(), rowCountBeforeChange);
+
+        List<TransactionDataRow> listPastOneMonthData = expenseData.getRows(LocalDate.now().minusMonths(1), LocalDate.now());
+
+        assertTrue(listPastOneMonthData.stream().filter(e->e.description().contains(testPhrase)).toList().size() > 0);
+
+    }
 
     private void testAddingOneRecord(){
         TransactionDataRowImpl dataRow = new TransactionDataRowImpl(0);

@@ -21,6 +21,7 @@ public interface TransactionData {
     double getCreditSum(LocalDate from, LocalDate to, PrimaryAccount type);
     List<TransactionDataRow> addRows(List<TransactionDataRow> dataRows);
     TransactionDataRow deleteRow(int rowId);
+    boolean updateRow(int rowId, TransactionDataRow row);
     boolean saveAll();
     long count();
 }

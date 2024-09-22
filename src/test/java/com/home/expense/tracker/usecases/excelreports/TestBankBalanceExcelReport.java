@@ -26,7 +26,7 @@ public class TestBankBalanceExcelReport {
         validateBalance(SubAccount.Bank_ICICI_Thoraipakkam_Dinesh, LocalDate.of(2022,1,31), 337890.18D);
 
         validateSaveExpenseDataToTestFile("C:\\Temp\\ExpenseTracker\\StatementFolder\\test1.csv", SubAccount.Bank_ICICI_Thoraipakkam_Dinesh,
-                LocalDate.of(2022,1,1), LocalDate.of(2022, 1, 31));
+                LocalDate.of(2022,1,2), LocalDate.of(2022, 2, 28));
 
     }
 
