@@ -1,4 +1,4 @@
-package com.home.expense.tracker.entities.datasource;
+package com.home.expense.tracker.entities.transaction;
 
 import com.home.expense.tracker.entities.PrimaryAccount;
 import com.home.expense.tracker.entities.SubAccount;
@@ -21,7 +21,7 @@ public interface TransactionData {
     double getCreditSum(LocalDate from, LocalDate to, PrimaryAccount type);
     List<TransactionDataRow> addRows(List<TransactionDataRow> dataRows);
     TransactionDataRow deleteRow(int rowId);
-    boolean updateRow(int rowId, TransactionDataRow row);
+    boolean updateRow(int rowId, PrimaryAccount debitAccount, PrimaryAccount creditAccount, SubAccount debitSubAccount, SubAccount creditSubAccount);
     boolean saveAll();
     long count();
 }

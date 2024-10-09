@@ -1,7 +1,7 @@
-package com.home.expense.tracker.entities.datasource;
+package com.home.expense.tracker.entities.transaction;
 
-import com.home.expense.tracker.entities.datasource.impl.TransactionDataCSVReaderImpl;
-import com.home.expense.tracker.entities.datasource.impl.TransactionDataCSVWriterImpl;
+import com.home.expense.tracker.entities.transaction.impl.TransactionDataCSVReaderImpl;
+import com.home.expense.tracker.entities.transaction.impl.TransactionDataCSVWriterImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

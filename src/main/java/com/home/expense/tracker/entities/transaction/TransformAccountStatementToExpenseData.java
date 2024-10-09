@@ -1,6 +1,5 @@
-package com.home.expense.tracker.entities.datatransform;
+package com.home.expense.tracker.entities.transaction;
 
-import com.home.expense.tracker.entities.datasource.TransactionDataRow;
 import com.home.expense.tracker.entities.statementimport.AccountStatement;
 
 import java.util.List;

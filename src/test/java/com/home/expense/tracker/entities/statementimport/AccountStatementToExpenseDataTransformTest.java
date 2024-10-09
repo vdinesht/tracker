@@ -1,8 +1,6 @@
 package com.home.expense.tracker.entities.statementimport;
 
-import com.home.expense.tracker.entities.datatransform.TransformAccountStatementToExpenseData;
-import com.home.expense.tracker.entities.statementimport.AccountStatement;
-import com.home.expense.tracker.entities.statementimport.AccountStatementFactory;
+import com.home.expense.tracker.entities.transaction.TransformAccountStatementToExpenseData;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

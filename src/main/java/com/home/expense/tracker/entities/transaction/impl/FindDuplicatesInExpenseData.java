@@ -1,7 +1,7 @@
-package com.home.expense.tracker.entities.datatransform.impl;
+package com.home.expense.tracker.entities.transaction.impl;
 
 
-import com.home.expense.tracker.entities.datasource.TransactionData;
+import com.home.expense.tracker.entities.transaction.TransactionData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

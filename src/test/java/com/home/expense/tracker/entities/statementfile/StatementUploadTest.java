@@ -1,11 +1,9 @@
 package com.home.expense.tracker.entities.statementfile;
 
-import com.home.expense.tracker.entities.datasource.TransactionData;
-import com.home.expense.tracker.entities.datasource.TransactionDataRow;
-import com.home.expense.tracker.entities.datatransform.TransformAccountStatementToExpenseData;
-import com.home.expense.tracker.entities.datatransform.impl.FindDuplicatesInExpenseData;
-import com.home.expense.tracker.entities.statementfile.StatementFileAvailability;
-import com.home.expense.tracker.entities.statementfile.StatementFileTransfer;
+import com.home.expense.tracker.entities.transaction.TransactionData;
+import com.home.expense.tracker.entities.transaction.TransactionDataRow;
+import com.home.expense.tracker.entities.transaction.TransformAccountStatementToExpenseData;
+import com.home.expense.tracker.entities.transaction.impl.FindDuplicatesInExpenseData;
 import com.home.expense.tracker.entities.statementimport.AccountStatement;
 import com.home.expense.tracker.entities.statementimport.AccountStatementFactory;
 import com.home.expense.tracker.entities.statementimport.AccountStatementType;

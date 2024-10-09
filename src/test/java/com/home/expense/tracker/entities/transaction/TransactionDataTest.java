@@ -1,12 +1,11 @@
-package com.home.expense.tracker.entities.datasource;
+package com.home.expense.tracker.entities.transaction;
 
 import com.home.expense.tracker.entities.PrimaryAccount;
 import com.home.expense.tracker.entities.SubAccount;
-import com.home.expense.tracker.entities.datasource.impl.TransactionDataRowImpl;
-import com.home.expense.tracker.entities.datatransform.impl.FindDuplicatesInExpenseData;
-import com.home.expense.tracker.usercases.excelreports.BankBalanceExcelReport;
+import com.home.expense.tracker.entities.transaction.impl.TransactionDataRowImpl;
+import com.home.expense.tracker.entities.transaction.impl.FindDuplicatesInExpenseData;
+import com.home.expense.tracker.usercases.reports.BankBalanceExcelReport;
 import com.home.expense.tracker.usercases.metrics.BankBalance;
-import org.junit.jupiter.api.ClassOrderer;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,7 +14,6 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -49,26 +47,22 @@ public class TransactionDataTest {
     @Test
     void testUpdateRow(){
         Random random = new Random();
-        String testPhrase = "-Updated*PasswordAbraCadara";
 
         int testId = random.nextInt(100, 10000);
         TransactionDataRow row = expenseData.getRows(List.of(testId)).get(0);
-        TransactionDataRowImpl newRow = new TransactionDataRowImpl(row);
-        newRow.setDebitAccount(PrimaryAccount.BankAsset);
-        newRow.setDebitSubAccount(SubAccount.Bank_ICICI_Thoraipakkam_Dinesh);
-        newRow.setCreditAccount(PrimaryAccount.DigitalPay);
-        newRow.setCreditSubAccount(SubAccount.Caterpillar_India);
-        newRow.setDescription(row.description() + testPhrase);
-        newRow.setDate(LocalDate.now());
+        TransactionDataRowImpl saveOriginalRow = new TransactionDataRowImpl(row);
 
+        assertTrue(expenseData.updateRow(testId, PrimaryAccount.CashAsset, PrimaryAccount.CashAsset, SubAccount.Cash, SubAccount.Tenant));
 
-        long rowCountBeforeChange = expenseData.count();
-        expenseData.updateRow(testId, newRow);
-        assertEquals(expenseData.count(), rowCountBeforeChange);
+        TransactionDataRow updatedRow = expenseData.getRows(List.of(testId)).get(0);
+        assertEquals(updatedRow.debitAccount(), PrimaryAccount.CashAsset);
+        assertEquals(updatedRow.creditAccount(), PrimaryAccount.CashAsset);
+        assertEquals(updatedRow.debitSubAccount(), SubAccount.Cash);
+        assertEquals(updatedRow.creditSubAccount(), SubAccount.Tenant);
 
-        List<TransactionDataRow> listPastOneMonthData = expenseData.getRows(LocalDate.now().minusMonths(1), LocalDate.now());
-
-        assertTrue(listPastOneMonthData.stream().filter(e->e.description().contains(testPhrase)).toList().size() > 0);
+        //Restore to original data
+        assertTrue(expenseData.updateRow(testId, saveOriginalRow.debitAccount(), saveOriginalRow.creditAccount(),
+                                            saveOriginalRow.debitSubAccount(), saveOriginalRow.creditSubAccount()));
 
     }
 
@@ -98,16 +92,18 @@ public class TransactionDataTest {
 
 
     void toPerformDataCleanUp(){
-        InsertBalanceAdjustmentRow();
+        //InsertBalanceAdjustmentRow();
 
         System.out.print("Bank Balance: ");
-        System.out.println(bankBalance.getBalance(SubAccount.Bank_ICICI_Thoraipakkam_Dinesh, LocalDate.of(2021,12,31)));
-        assertTrue(Math.abs(bankBalance.getBalance(SubAccount.Bank_ICICI_Thoraipakkam_Dinesh, LocalDate.of(2021,12,31)) - 429625.18D) < 1);
+        System.out.println(bankBalance.getBalance(SubAccount.Bank_ICICI_Thoraipakkam_Dinesh, LocalDate.of(2022,1,31)));
+        assertTrue(Math.abs(bankBalance.getBalance(SubAccount.Bank_ICICI_Thoraipakkam_Dinesh, LocalDate.of(2022,1,31)) - 337890.18D) < 1);
 
-        List<Integer> listOfRowIdToDelete = List.of(12403, 12407, 12415, 12457, 12458);
+        List<Integer> listOfRowIdToDelete = List.of(12533, 12542, 12568, 12579);
         listOfRowIdToDelete.forEach(e->expenseData.deleteRow(e));
 
-        saveExpenseDataToTestFile();
+        expenseData.updateRow(12527, PrimaryAccount.CashPay, PrimaryAccount.CashAsset, SubAccount.Cash, SubAccount.Cash);
+
+        //saveExpenseDataToTestFile();
 
         assertTrue(expenseData.saveAll());
     }
@@ -116,7 +112,7 @@ public class TransactionDataTest {
     private void saveExpenseDataToTestFile(){
       String strSaveFile = "C:\\Temp\\ExpenseTracker\\StatementFolder\\test1.csv";
        bankBalanceExcelReport.generateReport(SubAccount.Bank_ICICI_Thoraipakkam_Dinesh,
-                LocalDate.of(2022,1,1), LocalDate.of(2022, 1, 31),
+                LocalDate.of(2022,2,1), LocalDate.of(2022, 2, 28),
                 strSaveFile);
 
         assertTrue(true);

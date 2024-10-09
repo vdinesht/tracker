@@ -1,9 +1,9 @@
-package com.home.expense.tracker.entities.datasource.impl;
+package com.home.expense.tracker.entities.transaction.impl;
 
 import com.home.expense.tracker.entities.SubAccount;
 import com.home.expense.tracker.entities.TransactionCurrency;
-import com.home.expense.tracker.entities.datasource.TransactionDataHeader;
-import com.home.expense.tracker.entities.datasource.TransactionDataRow;
+import com.home.expense.tracker.entities.transaction.TransactionDataHeader;
+import com.home.expense.tracker.entities.transaction.TransactionDataRow;
 import com.home.expense.tracker.entities.GroupTag;
 import com.home.expense.tracker.entities.PrimaryAccount;
 import org.apache.commons.csv.CSVRecord;

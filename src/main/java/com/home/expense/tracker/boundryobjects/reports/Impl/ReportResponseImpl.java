@@ -4,7 +4,7 @@ import com.home.expense.tracker.boundryobjects.reports.ReportRequest;
 import com.home.expense.tracker.boundryobjects.reports.ReportResponse;
 import com.home.expense.tracker.entities.PrimaryAccount;
 import com.home.expense.tracker.entities.SubAccount;
-import com.home.expense.tracker.entities.datasource.TransactionDataRow;
+import com.home.expense.tracker.entities.transaction.TransactionDataRow;
 
 import java.time.LocalDate;
 import java.util.List;

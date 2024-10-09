@@ -1,8 +1,8 @@
-package com.home.expense.tracker.entities.datasource.impl;
+package com.home.expense.tracker.entities.transaction.impl;
 
 import com.home.expense.tracker.entities.SubAccount;
 import com.home.expense.tracker.entities.TransactionCurrency;
-import com.home.expense.tracker.entities.datasource.TransactionDataRow;
+import com.home.expense.tracker.entities.transaction.TransactionDataRow;
 import com.home.expense.tracker.entities.GroupTag;
 import com.home.expense.tracker.entities.PrimaryAccount;
 
@@ -75,6 +75,26 @@ public class TransactionDataRowImpl implements TransactionDataRow {
 
     public void id(int i) {
         this.id = i;
+    }
+
+    @Override
+    public void debitAccount(PrimaryAccount debitAccount) {
+        this.debitAccount = debitAccount;
+    }
+
+    @Override
+    public void creditAccount(PrimaryAccount creditAccount) {
+        this.creditAccount = creditAccount;
+    }
+
+    @Override
+    public void debitSubAccount(SubAccount debitSubAccount) {
+        this.debitSubAccount = debitSubAccount;
+    }
+
+    @Override
+    public void creditSubAccount(SubAccount creditSubAccount) {
+        this.creditSubAccount = creditSubAccount;
     }
 
     @Override

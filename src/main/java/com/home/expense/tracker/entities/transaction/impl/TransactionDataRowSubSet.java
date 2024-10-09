@@ -1,9 +1,9 @@
-package com.home.expense.tracker.entities.datatransform.impl;
+package com.home.expense.tracker.entities.transaction.impl;
 
 import com.home.expense.tracker.entities.PrimaryAccount;
 import com.home.expense.tracker.entities.SubAccount;
 import com.home.expense.tracker.entities.TransactionCurrency;
-import com.home.expense.tracker.entities.datasource.TransactionDataRow;
+import com.home.expense.tracker.entities.transaction.TransactionDataRow;
 
 import java.time.LocalDate;
 import java.util.Objects;

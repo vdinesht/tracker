@@ -1,4 +1,4 @@
-package com.home.expense.tracker.entities.datasource;
+package com.home.expense.tracker.entities.transaction;
 
 import com.home.expense.tracker.entities.GroupTag;
 import com.home.expense.tracker.entities.PrimaryAccount;
@@ -22,4 +22,9 @@ public interface TransactionDataRow {
     String gdriveLink();
     int id();
     void id(int i);
+    void debitAccount (PrimaryAccount debitAccount);
+    void creditAccount (PrimaryAccount creditAccount);
+    void debitSubAccount(SubAccount debitSubAccount);
+    void creditSubAccount(SubAccount creditSubAccount);
+
 }

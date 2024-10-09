@@ -3,7 +3,7 @@ package com.home.expense.tracker.usercases.reports.Impl;
 import com.home.expense.tracker.boundryobjects.reports.Impl.ReportResponseImpl;
 import com.home.expense.tracker.boundryobjects.reports.ReportRequest;
 import com.home.expense.tracker.boundryobjects.reports.ReportResponse;
-import com.home.expense.tracker.entities.datasource.TransactionData;
+import com.home.expense.tracker.entities.transaction.TransactionData;
 import com.home.expense.tracker.usercases.reports.BankBalanceReport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

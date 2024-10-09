@@ -1,6 +1,6 @@
 package com.home.expense.tracker.usercases.metrics.impl;
 
-import com.home.expense.tracker.entities.datasource.TransactionData;
+import com.home.expense.tracker.entities.transaction.TransactionData;
 import com.home.expense.tracker.entities.PrimaryAccount;
 import com.home.expense.tracker.usercases.metrics.CashBalance;
 import org.springframework.beans.factory.annotation.Autowired;

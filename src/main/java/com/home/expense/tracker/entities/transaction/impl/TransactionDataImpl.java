@@ -1,11 +1,11 @@
-package com.home.expense.tracker.entities.datasource.impl;
+package com.home.expense.tracker.entities.transaction.impl;
 
 import com.home.expense.tracker.entities.PrimaryAccount;
 import com.home.expense.tracker.entities.SubAccount;
-import com.home.expense.tracker.entities.datasource.TransactionData;
-import com.home.expense.tracker.entities.datasource.TransactionDataReader;
-import com.home.expense.tracker.entities.datasource.TransactionDataRow;
-import com.home.expense.tracker.entities.datasource.TransactionDataWriter;
+import com.home.expense.tracker.entities.transaction.TransactionData;
+import com.home.expense.tracker.entities.transaction.TransactionDataReader;
+import com.home.expense.tracker.entities.transaction.TransactionDataRow;
+import com.home.expense.tracker.entities.transaction.TransactionDataWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -115,12 +115,13 @@ public class TransactionDataImpl implements TransactionData {
     }
 
     @Override
-    public boolean updateRow(int rowId, TransactionDataRow row) {
-        deleteRow(rowId);
-        if (addRows(List.of(row)).size() > 0)
-            return true;
-        else
-            return false;
+    public boolean updateRow(int rowId, PrimaryAccount debitAccount, PrimaryAccount creditAccount, SubAccount debitSubAccount, SubAccount creditSubAccount) {
+        Optional<TransactionDataRow> rowToDelete = getAllRows().stream().filter(e->e.id()== rowId).findFirst();
+        rowToDelete.ifPresent(  e-> { e.debitAccount(debitAccount);
+                                      e.creditAccount(creditAccount);
+                                      e.debitSubAccount(debitSubAccount);
+                                      e.creditSubAccount(creditSubAccount);});
+        return rowToDelete.isPresent();
     }
 
     private void sortAndUpdateRowId() {

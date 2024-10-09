@@ -1,10 +1,10 @@
-package com.home.expense.tracker.usercases.excelreports.Impl;
+package com.home.expense.tracker.usercases.reports.Impl;
 
 import com.home.expense.tracker.boundryobjects.reports.Impl.ReportRequestImpl;
 import com.home.expense.tracker.boundryobjects.reports.ReportResponse;
 import com.home.expense.tracker.entities.PrimaryAccount;
 import com.home.expense.tracker.entities.SubAccount;
-import com.home.expense.tracker.usercases.excelreports.BankBalanceExcelReport;
+import com.home.expense.tracker.usercases.reports.BankBalanceExcelReport;
 import com.home.expense.tracker.usercases.metrics.BankBalance;
 import com.home.expense.tracker.usercases.reports.BankBalanceReport;
 import com.home.expense.tracker.usercases.reports.BankTransactionDataRow;

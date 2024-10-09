@@ -1,4 +1,4 @@
-package com.home.expense.tracker.entities.datasource;
+package com.home.expense.tracker.entities.transaction;
 
 import java.util.List;
 
