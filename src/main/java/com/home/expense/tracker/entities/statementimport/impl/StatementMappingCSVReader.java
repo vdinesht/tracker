@@ -15,11 +15,11 @@ import org.springframework.stereotype.Service;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Map;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -63,18 +63,32 @@ public class StatementMappingCSVReader implements StatementMappingReader {
 
     @Override
     public List<StatementMappingRow> getAllDebitMappingRows() {
-        String debitMappingFilePath = "C:\\Temp\\ExpenseTracker\\BankStatement\\StatementDebitMapping.csv";
-        if (debitMappingList.isEmpty())
-            debitMappingList = fillDataRows(debitMappingFilePath);
+        try {
+            Path resourcePath = Paths.get(Objects.requireNonNull(StatementMappingCSVReader.class.getResource("/")).toURI());
+            logger.info("Source Folder Path: " + resourcePath);
+            String debitMappingFilePath = resourcePath + "//StatementDebitMapping.csv";
+            if (debitMappingList.isEmpty())
+                debitMappingList = fillDataRows(debitMappingFilePath);
+            }
+        catch (URISyntaxException e) {
+                logger.error(e.toString());
+        }
 
         return debitMappingList;
     }
 
     @Override
     public List<StatementMappingRow> getAllCreditMappingRows() {
-        String creditMappingFilePath = "C:\\Temp\\ExpenseTracker\\BankStatement\\StatementCreditMapping.csv";
-        if (creditMappingList.isEmpty())
-            creditMappingList = fillDataRows(creditMappingFilePath);
+        try {
+            Path resourcePath = Paths.get(Objects.requireNonNull(StatementMappingCSVReader.class.getResource("/")).toURI());
+            logger.info("Source Folder Path: " + resourcePath);
+            String creditMappingFilePath = resourcePath + "//StatementCreditMapping.csv";
+            if (creditMappingList.isEmpty())
+                creditMappingList = fillDataRows(creditMappingFilePath);
+        }
+        catch (URISyntaxException e) {
+            logger.error(e.toString());
+        }
 
         return creditMappingList;
     }

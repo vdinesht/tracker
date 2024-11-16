@@ -1,0 +1,9 @@
+﻿AccountStatement,Token,DebitAccount,CreditAccount,DebitSubAccount,CreditSubAccount
+BankICICIThoraipakkamDinesh,.*NSEClearingLimited.*,DigitalPay,BankAsset,Investment,ICICI Thoraipakkam - Dinesh
+BankICICIThoraipakkamDinesh,.*HDFC0004460/NETANYA.*,DigitalPay,BankAsset,Investment,ICICI Thoraipakkam - Dinesh
+BankICICIThoraipakkamDinesh,.*Netanya Studies/NETANYA.*,DigitalPay,BankAsset,Investment,ICICI Thoraipakkam - Dinesh
+BankICICIThoraipakkamDinesh,.*Study saving/NETANYA.*,DigitalPay,BankAsset,Investment,ICICI Thoraipakkam - Dinesh
+BankICICIThoraipakkamDinesh,.*SBICARD_YICI.*,DigitalPay,BankAsset,CreditCard Payment,ICICI Thoraipakkam - Dinesh
+BankICICIThoraipakkamDinesh,.*NEFTCC.*,DigitalPay,BankAsset,CreditCard Payment,ICICI Thoraipakkam - Dinesh
+BankICICIThoraipakkamDinesh,.*CASH.WDL.*,CashPay,BankAsset,Cash,ICICI Thoraipakkam - Dinesh
+BankICICIThoraipakkamDinesh,.*,DigitalPay,BankAsset,Other Expense,ICICI Thoraipakkam - Dinesh
