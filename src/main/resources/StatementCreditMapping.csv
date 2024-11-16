@@ -1,0 +1,9 @@
+﻿AccountStatement,Token,DebitAccount,CreditAccount,DebitSubAccount,CreditSubAccount
+BankICICIThoraipakkamDinesh,NEFT-CITIN[\d]+-CATERPILLAR.IND.*,BankAsset,DigitalPay,ICICI Thoraipakkam - Dinesh,Caterpillar India
+BankICICIThoraipakkamDinesh,.*s.poobalan19.*,BankAsset,DigitalPay,ICICI Thoraipakkam - Dinesh,Tenant
+BankICICIThoraipakkamDinesh,.*rgprabakaran1.*,BankAsset,DigitalPay,ICICI Thoraipakkam - Dinesh,Tenant
+BankICICIThoraipakkamDinesh,.*danielpramila.*,BankAsset,DigitalPay,ICICI Thoraipakkam - Dinesh,Tenant
+BankICICIThoraipakkamDinesh,.*maheshwarimohan.*,BankAsset,DigitalPay,ICICI Thoraipakkam - Dinesh,Tenant
+BankICICIThoraipakkamDinesh,.*Int.Pd.*,BankAsset,DigitalPay,ICICI Thoraipakkam - Dinesh,ICICI
+BankICICIThoraipakkamDinesh,.*NATIONAL.SECURITIES.DEPOSITORY.*,BankAsset,DigitalPay,ICICI Thoraipakkam - Dinesh,Investment Interest
+BankICICIThoraipakkamDinesh,.*,BankAsset,DigitalPay,ICICI Thoraipakkam - Dinesh,Misc

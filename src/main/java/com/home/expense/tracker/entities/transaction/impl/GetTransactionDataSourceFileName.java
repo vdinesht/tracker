@@ -11,7 +11,7 @@ import java.net.URL;
 public class GetTransactionDataSourceFileName {
     private static final Logger logger = LoggerFactory.getLogger(GetTransactionDataSourceFileName.class);
 
-    public static String getDataSourceFilePath(Environment env){
+public static String getDataSourceFilePath(Environment env){
         ClassLoader classLoader = GetTransactionDataSourceFileName.class.getClassLoader();
         URL resource = classLoader.getResource(env.getProperty("tracker.datasource.file"));
         if (resource == null) {

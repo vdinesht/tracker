@@ -8,7 +8,12 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 public class StatementFileAvailabilityImpl implements StatementFileAvailability {
@@ -26,49 +31,32 @@ public class StatementFileAvailabilityImpl implements StatementFileAvailability 
             return "";
     }
     private List<String> getAllCSVFilesNotProcessed(){
-        Set<String> allFilesInFolder = new HashSet<>(getAllCSVFilesInSourceFolder());
-        Set<String> allProcessedFiles = new HashSet<>(getAllCSVFileAlreadyProcessed());
 
-        allFilesInFolder.removeAll(allProcessedFiles);
-        return new ArrayList<>(allFilesInFolder);
-    }
-    private List<String> getAllCSVFileAlreadyProcessed()  {
-        List<String> lines = new ArrayList<>();
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(Objects.requireNonNull(env.getProperty("tracker.statements.processed.statusfile"))));
-            String line = br.readLine();
-            while (line != null) {
-                lines.add(line);
-                line = br.readLine();
-            }
-            br.close();
-        } catch (Exception e) {
-            logger.error(e.toString());
-        }
-        return lines;
+        return getAllCSVFilesInSourceFolder();
     }
 
     private List<String> getAllCSVFilesInSourceFolder() {
         List<String> csvFilePaths = new ArrayList<>();
-        try{
-            logger.info("Source Folder Path: " + env.getProperty("tracker.statements.source.folder"));
-            File[] files = new File(Objects.requireNonNull(env.getProperty("tracker.statements.source.folder"))).listFiles();
-            for (File file : files) {
-                if (file.isFile()) {
-                    if (file.getName().contains(".csv"))
-                        csvFilePaths.add(file.getPath());
-                }
+        try {
+            Path resourcePath = Paths.get(Objects.requireNonNull(StatementFileAvailabilityImpl.class.getResource("/")).toURI());
+            logger.info("Source Folder Path: " + resourcePath);
+
+            try (Stream<Path> paths = Files.walk(resourcePath)) {
+                paths.filter(Files::isRegularFile)
+                        .forEach(path-> checkForCsvFileAndAdd(csvFilePaths, String.valueOf(path.getFileName())));
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        }
-        catch (NullPointerException exception){
-            logger.error(exception.toString());
+        } catch (URISyntaxException e) {
+            logger.error(e.toString());
         }
 
         return csvFilePaths;
     }
 
-    private String getFileNameOnly(String fullFilePath){
-        File file = new File(fullFilePath);
-        return file.getName();
+    private static void checkForCsvFileAndAdd(List<String> csvFilePaths, String fileName) {
+        if (fileName.contains(".csv"))
+            csvFilePaths.add(fileName);
     }
+
 }
