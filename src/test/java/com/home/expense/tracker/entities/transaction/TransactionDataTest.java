@@ -2,6 +2,7 @@ package com.home.expense.tracker.entities.transaction;
 
 import com.home.expense.tracker.entities.PrimaryAccount;
 import com.home.expense.tracker.entities.SubAccount;
+import com.home.expense.tracker.entities.transaction.impl.DuplicateTransactionDetector;
 import com.home.expense.tracker.entities.transaction.impl.TransactionDataRowImpl;
 import com.home.expense.tracker.entities.transaction.impl.FindDuplicatesInExpenseData;
 import com.home.expense.tracker.usercases.reports.BankBalanceExcelReport;
@@ -132,5 +133,15 @@ public class TransactionDataTest {
         expenseData.addRows(dataRowList);
     }
 
+    @Test
+    void testForDuplicatesInExistingData(){
+          // Find duplicates
+        List<TransactionDataRow> duplicates = DuplicateTransactionDetector.identifyDuplicates(
+                                                expenseData.getRows( LocalDate.of(2021,1,1),
+                                                LocalDate.now()));
+        assertTrue(duplicates.isEmpty());
+
+
+    }
 
 }
