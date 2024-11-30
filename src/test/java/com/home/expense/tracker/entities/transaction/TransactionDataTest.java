@@ -136,12 +136,30 @@ public class TransactionDataTest {
     @Test
     void testForDuplicatesInExistingData(){
           // Find duplicates
-        List<TransactionDataRow> duplicates = DuplicateTransactionDetector.identifyDuplicates(
+        List<TransactionDataRow> duplicates = DuplicateTransactionDetector.identifyDuplicatesWithDescription(
                                                 expenseData.getRows( LocalDate.of(2021,1,1),
                                                 LocalDate.now()));
         assertTrue(duplicates.isEmpty());
 
 
+
+        duplicates = DuplicateTransactionDetector.identifyDuplicatesWithAccounts(
+                expenseData.getRows( LocalDate.of(2021,1,1),
+                        LocalDate.now()));
+
+        // Print duplicates
+        if (duplicates.isEmpty()) {
+            System.out.println("No duplicates found.");
+        } else {
+            System.out.println("Duplicate Transactions:");
+            for (TransactionDataRow duplicate : duplicates) {
+                System.out.println(duplicate.id());
+            }
+        }
+
+
+        //Saving to new format
+        //expenseData.saveAll();
     }
 
 }

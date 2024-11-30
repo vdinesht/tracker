@@ -31,6 +31,7 @@ public class TransactionDataCSVWriterImpl extends CSVFileWriter<TransactionDataR
         printer.print(r.transType2015());
         printer.print(r.groupTag());
         printer.print(r.gdriveLink());
+        printer.print(r.details());
         printer.print(r.id());
         printer.println();
     }

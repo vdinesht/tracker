@@ -20,6 +20,8 @@ public interface TransactionDataRow {
 
     GroupTag groupTag();
     String gdriveLink();
+
+    String details();
     int id();
     void id(int i);
     void debitAccount (PrimaryAccount debitAccount);
