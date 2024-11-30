@@ -22,9 +22,9 @@ public class TestBankBalanceExcelReport {
 
     @Test
     void testBankBalanceExcelReport(){
-        validateBalance(SubAccount.Bank_ICICI_Thoraipakkam_Dinesh, LocalDate.of(2021,12,31), 429625.18D);
-        validateBalance(SubAccount.Bank_ICICI_Thoraipakkam_Dinesh, LocalDate.of(2022,1,31), 337890.18D);
-        validateBalance(SubAccount.Bank_ICICI_Thoraipakkam_Dinesh, LocalDate.of(2022,2,28), 664077.67D);
+        validateBalance(SubAccount.Bank_ICICI_Thoraipakkam_Dinesh, LocalDate.of(2021,12,31), 435525.18D);
+        validateBalance(SubAccount.Bank_ICICI_Thoraipakkam_Dinesh, LocalDate.of(2022,1,31), 343790.18D);
+        validateBalance(SubAccount.Bank_ICICI_Thoraipakkam_Dinesh, LocalDate.of(2022,2,28), 669977.67D);
 
         validateSaveExpenseDataToTestFile("C:\\Temp\\ExpenseTracker\\StatementFolder\\test1.csv", SubAccount.Bank_ICICI_Thoraipakkam_Dinesh,
                 LocalDate.of(2022,3,1), LocalDate.of(2022, 3, 31));
