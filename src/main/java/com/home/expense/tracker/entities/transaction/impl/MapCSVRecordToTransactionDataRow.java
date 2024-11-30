@@ -36,6 +36,7 @@ public final class MapCSVRecordToTransactionDataRow {
         transactionDataRow.setTransType2015(record.get(TransactionDataHeader.Type));
         transactionDataRow.setGroupTag(extractGroupTag(record.get(TransactionDataHeader.GroupTag)));
         transactionDataRow.setGdriveLink(record.get(TransactionDataHeader.GLinkDrive));
+        transactionDataRow.setDetails(record.get(TransactionDataHeader.Details));
         transactionDataRow.id(extractId(record.get(TransactionDataHeader.ID)));
 
         return transactionDataRow;

@@ -12,5 +12,6 @@ public enum TransactionDataHeader {
     Type,
     GroupTag,
     GLinkDrive,
+    Details,
     ID
 }

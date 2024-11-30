@@ -24,7 +24,7 @@ public class TransactionDataRowImpl implements TransactionDataRow {
     private GroupTag groupTag;
     private String gdriveLink;
     private int id;
-
+    private String detailDescription;
     public TransactionDataRowImpl(int i) {
         this.id = i;
     }
@@ -157,21 +157,30 @@ public class TransactionDataRowImpl implements TransactionDataRow {
         return this.id;
     }
 
+    public String details() {
+        return this.detailDescription;
+    }
+
+    public void setDetails(String detailDescription) {
+        this.detailDescription = detailDescription;
+    }
+
     @Override
     public String toString() {
         return "TransactionDataRowImpl{" +
                 "date=" + date +
                 ", amount=" + amount +
-                ", currency='" + currency + '\'' +
+                ", currency=" + currency +
                 ", description='" + description + '\'' +
                 ", debitAccount=" + debitAccount +
                 ", creditAccount=" + creditAccount +
-                ", debitSubAccount='" + debitSubAccount + '\'' +
-                ", creditSubAccount='" + creditSubAccount + '\'' +
+                ", debitSubAccount=" + debitSubAccount +
+                ", creditSubAccount=" + creditSubAccount +
                 ", transType2015='" + transType2015 + '\'' +
                 ", groupTag=" + groupTag +
                 ", gdriveLink='" + gdriveLink + '\'' +
                 ", id=" + id +
+                ", detailDescription='" + detailDescription + '\'' +
                 '}';
     }
 
@@ -188,6 +197,7 @@ public class TransactionDataRowImpl implements TransactionDataRow {
         this.groupTag = other.groupTag();
         this.gdriveLink = other.gdriveLink();
         this.id = other.id();
+        this.detailDescription = other.details();
     }
 
     @Override
